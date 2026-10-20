@@ -1,0 +1,2 @@
+wget -c \
+"https://bioos-hermite-beijing.tos-cn-beijing.volces.com/unimol_data/pretrain/ligands.tar.gz"
