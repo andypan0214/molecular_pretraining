@@ -1,0 +1,13 @@
+.ipynb_checkpoints/
+__pycache__/
+.env
+*.pt
+*.pth
+*.ckpt
+*.lmdb
+*.log
+data/
+results/
+reports/
+checkpoints/
+lumi_notebook_workspace/
