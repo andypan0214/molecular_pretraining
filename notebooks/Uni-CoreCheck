@@ -1,0 +1,46 @@
+
+import sys
+import site
+import os
+import importlib
+import importlib.util
+from pathlib import Path
+from IPython.display import display
+
+print("=== PYTHON ENVIRONMENT ===")
+print("Executable:", sys.executable)
+print("Python:", sys.version.split()[0])
+print("User site:", site.getusersitepackages())
+print("User site enabled:", site.ENABLE_USER_SITE)
+
+print("\n=== UNICORE LOCATION ===")
+user_site = Path(site.getusersitepackages())
+
+print("User site exists:", user_site.exists())
+print("Unicore folder:", (user_site / "unicore").exists())
+
+print("\n=== SOURCE LOCATION ===")
+core = SOURCE / "Uni-Core"
+print("Source exists:", core.exists())
+print("Package directory:", (core / "unicore").exists())
+print("Setup:", (core / "setup.py").exists())
+
+# Refresh Python's package discovery
+importlib.invalidate_caches()
+
+if user_site.is_dir() and str(user_site) not in sys.path:
+    sys.path.insert(0, str(user_site))
+
+# Use local Uni-Core source as an import fallback
+if (core / "unicore").is_dir():
+    if str(core) not in sys.path:
+        sys.path.insert(0, str(core))
+
+print("\n=== IMPORT TEST ===")
+
+try:
+    import unicore
+    print("PASS: unicore imported")
+    print("Location:", unicore.__file__)
+except Exception as e:
+    print("FAIL:", type(e).__name__, str(e))
