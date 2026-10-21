@@ -1,0 +1,56 @@
+
+from pathlib import Path
+import lmdb
+import pickle
+import numpy as np
+
+DATA_DIR = (
+    Path.home()
+    / "heart_liver/model/UniMolReference/ligand_data/ligands"
+)
+
+def inspect_lmdb(filename, n_samples=3):
+    path = DATA_DIR / filename
+
+    assert path.is_file(), f"Missing: {path}"
+
+    env = lmdb.open(
+        str(path),
+        subdir=False,
+        readonly=True,
+        lock=False,
+        readahead=False,
+        max_readers=128,
+    )
+
+    try:
+        with env.begin(write=False) as txn:
+            print(f"\nDataset: {filename}")
+            print("Total records:", txn.stat()["entries"])
+
+            for idx, (key, raw) in enumerate(txn.cursor()):
+                if idx >= n_samples:
+                    break
+
+                # Only deserialize trusted official Uni-Mol data
+                record = pickle.loads(raw)
+
+                print(f"\nRecord {idx}")
+                print("LMDB key:", key)
+
+                if isinstance(record, dict):
+                    for name, value in record.items():
+                        shape = getattr(value, "shape", None)
+                        print(
+                            name,
+                            "type:", type(value).__name__,
+                            "shape:", shape,
+                        )
+                else:
+                    print("Record type:", type(record).__name__)
+
+    finally:
+        env.close()
+
+inspect_lmdb("train.lmdb")
+inspect_lmdb("valid.lmdb")
