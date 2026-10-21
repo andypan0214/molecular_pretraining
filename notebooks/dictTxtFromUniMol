@@ -1,0 +1,2 @@
+wget -O dict.txt \
+"https://raw.githubusercontent.com/deepmodeling/Uni-Mol/main/unimol/example_data/molecule/dict.txt"
