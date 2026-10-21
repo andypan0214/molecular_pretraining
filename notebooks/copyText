@@ -1,0 +1,33 @@
+# clone lumi lab repo 
+
+git clone https://github.com/bowenli-lab/LUMI-lab.git LUMI-lab-reference
+
+create script 
+
+mkdir -p ~/heart_liver/model/molecular_pretraining/scripts
+
+copy script
+
+cp ~/heart_liver/model/LUMI-lab-reference/model/pretrain/pretrain.sh ~/heart_liver/model/molecular_pretraining/scripts/pretrain_cmri.sh
+
+nano ~/heart_liver/model/molecular_pretraining/scripts/pretrain_cmri.sh
+
+change from 
+
+data_path=/scratch/ssd004/datasets/cellxgene/3d_molecule_data/cleaned_ligands/
+
+save_dir=/fs01/datasets/cellxgene/3d_molecule_save/pretrain-${run_name}$date_time/
+
+chang to 
+
+data_path="$HOME/heart_liver/model/UniMolReference/ligand_data/ligands"
+
+save_dir="$HOME/heart_liver/model/molecular_pretraining/checkpoints/pretrain-${run_name}-${date_time}"
+
+
+HPC settting don't modified yet:
+  #SBATCH --partition=a100
+#SBATCH --qos=a100_bowang
+#SBATCH --gres=gpu:1
+
+  
