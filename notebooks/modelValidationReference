@@ -1,0 +1,20 @@
+from pathlib import Path
+import lmdb
+
+data_dir = Path.home() / "heart_liver/model/UniMolReference/ligand_data/ligands"
+
+for filename in ["train.lmdb", "valid.lmdb"]:
+    path = data_dir / filename
+
+    env = lmdb.open(
+        str(path),
+        readonly=True,
+        lock=False,
+        subdir=False,
+        readahead=False
+    )
+
+    with env.begin() as txn:
+        print(filename, "records:", txn.stat()["entries"])
+
+    env.close()
