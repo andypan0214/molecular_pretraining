@@ -5,6 +5,11 @@ before everything make sure to setup the environemnt on the HPC make sure to loa
 ### load miniconda 
 module load miniconda3/py311_24.1.2
 source /mnt/software/miniconda3/py311_24.1.2/etc/profile.d/conda.sh
+
+### check current useable environment: 
+conda env list
+conda info --envs
+
 ### create environemt & activation 
 conda create -n heart_gpu python=3.11 pip -y
 conda activate heart_gpu
