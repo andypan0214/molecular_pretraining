@@ -1,3 +1,23 @@
+before everything make sure to setup the environemnt on the HPC make sure to load the module first before we can utilized the package for this model specifically, the pytorch have to be update 
+
+# create environment : HPC 
+
+### load miniconda 
+module load miniconda3/py311_24.1.2
+source /mnt/software/miniconda3/py311_24.1.2/etc/profile.d/conda.sh
+### create environemt & activation 
+conda create -n heart_gpu python=3.11 pip -y
+conda activate heart_gpu
+
+export PYTHONNOUSERSITE=1
+
+echo "=== HEART Pretraining Environment ==="
+echo "CONDA_PREFIX=$CONDA_PREFIX"
+
+which python
+python --version
+
+
 # clone lumi lab repo 
 
 git clone https://github.com/bowenli-lab/LUMI-lab.git LUMI-lab-reference
@@ -18,7 +38,7 @@ data_path=/scratch/ssd004/datasets/cellxgene/3d_molecule_data/cleaned_ligands/
 
 save_dir=/fs01/datasets/cellxgene/3d_molecule_save/pretrain-${run_name}$date_time/
 
-chang to 
+change to 
 
 data_path="$HOME/heart_liver/model/UniMolReference/ligand_data/ligands"
 
