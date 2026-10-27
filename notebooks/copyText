@@ -31,3 +31,42 @@ HPC settting don't modified yet:
 #SBATCH --gres=gpu:1
 
   
+## checking pytorch environment 
+
+python -c "import torch; print('Torch:', torch.__version__); print('CUDA:', torch.version.cuda); print('Available:', torch.cuda.is_available())"
+
+##dataset save: 
+
+
+run_name=cmri-gpu-pilot
+date_time=$(date "+%Y%m%d-%H%M")
+
+data_path=/home/ypan/heart_liver/model/UniMolReference/ligand_data/ligands
+
+save_dir=/home/ypan/heart_liver/model/lumi_training_runs/pretrain-${run_name}-${date_time}
+
+mkdir -p "$save_dir"
+
+## check package availability 
+
+# A CUDA 
+module avail cuda
+
+#PyTorch
+
+python -c "import torch; print(torch.__version__); print(torch.version.cuda)"
+
+change : cd /fs01/home/haotian/SDL-LNP/model to our own path to the model 
+
+check pytorch: python -c 'import torch; print(torch.__version__)'
+check pytorch cuda
+
+python -c 'import torch; print(torch.version.cuda)'
+
+if GPU work ? 
+python -c 'import torch; print(torch.cuda.is_available())'
+
+check uni-core: 
+python -c 'import unicore; print(unicore.__file__)'
+
+
