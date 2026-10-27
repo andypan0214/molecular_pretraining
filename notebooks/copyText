@@ -70,3 +70,50 @@ check uni-core:
 python -c 'import unicore; print(unicore.__file__)'
 
 
+## update python from cpu only version to gpu based 
+python -m pip install --upgrade \
+  "torch==2.2.2+cu121" \
+  --index-url https://download.pytorch.org/whl/cu121
+
+testing pytorch afterward: 
+
+
+
+python - <<'PY'
+import torch
+import time
+
+print("PyTorch:", torch.__version__)
+print("CUDA build:", torch.version.cuda)
+print("CUDA available:", torch.cuda.is_available())
+
+if not torch.cuda.is_available():
+    print("FAIL: GPU is not accessible to PyTorch")
+    raise SystemExit(1)
+
+device = torch.device("cuda:0")
+print("GPU:", torch.cuda.get_device_name(0))
+
+# Small GPU computation
+a = torch.randn(1024, 1024, device=device)
+b = torch.randn(1024, 1024, device=device)
+
+torch.cuda.synchronize()
+start = time.time()
+
+c = a @ b
+
+torch.cuda.synchronize()
+
+print("Result shape:", tuple(c.shape))
+print("Computation time:", round(time.time() - start, 4), "seconds")
+print("Result device:", c.device)
+
+assert c.is_cuda
+assert torch.isfinite(c).all().item()
+
+print("PASS: Real GPU computation successful")
+PY
+
+
+
