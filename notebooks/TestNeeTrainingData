@@ -9,3 +9,12 @@ cd "$HEART_MODEL_ROOT/pretrain"
 mkdir -p logs
 
 bash scripts/check_heart_env.sh
+
+
+python -c "import numpy; print(numpy.__version__); print(numpy.__file__)"
+
+cd /home/ypan/heart_liver/model/heart-molecular-pretraining/model
+
+python -m pip install --no-user -r pretrain/requirements-heart.txt
+
+python -c "import numpy, torch; print('NumPy:', numpy.__version__); print('Torch:', torch.__version__)"
