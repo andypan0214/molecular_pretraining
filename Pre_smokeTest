@@ -1,0 +1,26 @@
+## Pre smoke test proceed to smoke test the chunk below is to check if LNDB can be read correctly 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model
+
+mkdir -p ../runs
+
+python pretrain/tools/inspect_real_lmdb.py \
+  /home/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands \
+  --samples 5 \
+  --pipeline \
+  --json ../runs/inspect_real_lmdb.json
+
+  ## actual smoke test 30 minute test 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
+
+HEART_DRY_RUN=1 bash scripts/pretrain_smoke.sh
+
+## if return : pre-flight passed than continous 
+
+## check status while running smoke test 
+
+squeue -j "$JOBID"
+
+### check current log while running smoke test; 
+tail -f /home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-smoke-test-$JOBID.out
