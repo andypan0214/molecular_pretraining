@@ -11,6 +11,7 @@ mkdir -p logs
 bash scripts/check_heart_env.sh
 
 
+## check if numpy and install requiment package for this project 
 python -c "import numpy; print(numpy.__version__); print(numpy.__file__)"
 
 cd /home/ypan/heart_liver/model/heart-molecular-pretraining/model
@@ -29,8 +30,41 @@ python -c "import unicore; print('Uni-Core:', unicore.__file__)"
 
 command -v unicore-train
 
+## clone unicore repo 
+module load git/2.42.0
+
+mkdir -p /home/ypan/heart_liver/model/third_party
+cd /home/ypan/heart_liver/model/third_party
+
+git clone https://github.com/dptech-corp/Uni-Core.git
+
+cd Uni-Core
+
+git checkout ace6fae1c8479a9751f2bb1e1d6e4047427bc134
+
 ## check registry if unicol is pass: 
 
 cd /home/ypan/heart_liver/model/heart-molecular-pretraining/model
 
 python pretrain/tools/check_registry.py --user-dir ./unimol
+
+## install unic-core: 
+python -m pip install --no-user --no-build-isolation --no-deps .
+
+## check if uni-core exist 
+python -c "import unicore; print(unicore.__file__)"
+
+command -v unicore-train
+
+## check registry:
+export HEART_MODEL_ROOT="/home/ypan/heart_liver/model/heart-molecular-pretraining/model"
+
+cd "$HEART_MODEL_ROOT"
+
+python pretrain/tools/check_registry.py --user-dir ./unimol
+
+## test environement only if previous pass; 
+export HEART_DATA_PATH="/home/ypan/heart_liver/model/UniMolReference/ligand_data/ligands"
+export HEART_OUTPUT_ROOT="/home/ypan/heart_liver/model/heart_training_runs"
+
+bash pretrain/scripts/check_heart_env.sh
