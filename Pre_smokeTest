@@ -38,12 +38,23 @@ LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-
 
 tail -f "$LOG"
 
+#### smoke check valid
+
+find ../../runs/smoke \
+  -name 'smoke_result-1011488.txt' \
+  -exec cat {} \;
+
+#### expect output show valid
+
+find ../../runs/smoke -type f -name '*1011488*'
+tail -50 ../../runs/slurm/heart-smoke-test-1011488.out
+
 ## check log : what is already create 
 LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-smoke-test-1011484.out"
 
 grep -E 'num_updates=|MemoryError|CUDA out of memory|Traceback|verdict=' "$LOG" | tail -25
 
-## validate after training: 
+## validate after training: remember job id will chnge evertime we run 
 RUN=$(grep -o 'run dir: .*' "$LOG" | tail -1 | cut -d' ' -f3)
 
 echo "$RUN"
