@@ -89,5 +89,8 @@ sbatch --test-only \
 #### save check point 
 find ../../runs/smoke -name 'checkpoint_last.pt'
 
+#### check point save under 
+../../runs/smoke/heart-smoke-test-20261028-130641-j1011488/checkpoint_last.pt
+
 
 
