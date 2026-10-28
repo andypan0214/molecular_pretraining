@@ -48,3 +48,23 @@ RUN=$(grep -o 'run dir: .*' "$LOG" | tail -1 | cut -d' ' -f3)
 
 echo "$RUN"
 cat "$RUN/smoke_result-$JOBID.txt"
+
+## issue: out of memort examine with 
+
+#### check cpu usage: 
+sstat -j 1011484 \
+  --format=JobID,MaxRSS,AveRSS,MaxVMSize
+
+#### of nothing show up use the code below : to check if this is the problem from our ram 
+sacct -j 1011484 \
+  --format=JobID,JobName,State,Elapsed,MaxRSS,ReqMem,ExitCode
+
+#### check if there optimizer update: 
+LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-smoke-test-1011484.out"
+
+grep 'num_updates=' "$LOG" | tail -5
+
+#### cancel it if it still show memory error 
+scancel 1011484
+
+
