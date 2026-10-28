@@ -86,4 +86,8 @@ sbatch --test-only \
   /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain/scripts/pretrain_smoke.sh
 
 
+#### save check point 
+find ../../runs/smoke -name 'checkpoint_last.pt'
+
+
 
