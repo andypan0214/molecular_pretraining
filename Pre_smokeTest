@@ -67,4 +67,12 @@ grep 'num_updates=' "$LOG" | tail -5
 #### cancel it if it still show memory error 
 scancel 1011484
 
+## check access: 
+sbatch --test-only \
+  --mem=100G \
+  --gres=gpu:t4:1 \
+  --time=00:30:00 \
+  /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain/scripts/pretrain_smoke.sh
+
+
 
