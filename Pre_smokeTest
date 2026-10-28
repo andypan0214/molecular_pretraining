@@ -38,6 +38,11 @@ LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-
 
 tail -f "$LOG"
 
+## check log : what is already create 
+LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-smoke-test-1011484.out"
+
+grep -E 'num_updates=|MemoryError|CUDA out of memory|Traceback|verdict=' "$LOG" | tail -25
+
 ## validate after training: 
 RUN=$(grep -o 'run dir: .*' "$LOG" | tail -1 | cut -d' ' -f3)
 
