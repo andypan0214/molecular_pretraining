@@ -10,7 +10,7 @@ python pretrain/tools/inspect_real_lmdb.py \
   --pipeline \
   --json ../runs/inspect_real_lmdb.json
 
-  ## actual smoke test 30 minute test 
+  ##pre smoke test 30 minute test check avaiableility: sucessfully retun pre-flight pass (validated)
 
 cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
 
@@ -24,3 +24,22 @@ squeue -j "$JOBID"
 
 ### check current log while running smoke test; 
 tail -f /home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-smoke-test-$JOBID.out
+
+## actual smoke test 
+
+JOBID=$(sbatch --parsable scripts/pretrain_smoke.sh)
+echo "HEART Smoke Job ID: $JOBID"
+
+## check status: 
+squeue -j "$JOBID"
+
+## check training log 
+LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-smoke-test-$JOBID.out"
+
+tail -f "$LOG"
+
+## validate after training: 
+RUN=$(grep -o 'run dir: .*' "$LOG" | tail -1 | cut -d' ' -f3)
+
+echo "$RUN"
+cat "$RUN/smoke_result-$JOBID.txt"
