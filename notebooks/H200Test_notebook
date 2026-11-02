@@ -1,0 +1,17 @@
+## test H200 GPU power and exist
+
+srun -p gpu --gres=gpu:h200:1 \
+  --cpus-per-task=2 --mem=4G \
+  --time=00:05:00 \
+  /bin/bash -lc 'python -c "import torch; print(torch.cuda.get_device_name(0)); print(round(torch.cuda.get_device_properties(0).total_memory / 1024**3, 2), \"GiB\")"'
+
+## test batch size for h200
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
+
+BATCH_SIZE=448 \
+MAX_UPDATE=10 \
+NUM_WORKERS=0 \
+sbatch --gres=gpu:h200:1 \
+  --time=00:30:00 \
+  scripts/pretrain_smoke.sh
