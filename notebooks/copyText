@@ -300,3 +300,15 @@ HEART_CONFIRM_FULL=1 \
 BATCH_SIZE=4 \
 HEART_SMOKE_RUN="$RUN" \
 sbatch --gres=gpu:t4:1 scripts/pretrain_heart.sh 
+
+### check status 
+JOBID=你的JobID
+
+LOG="runs/full/heart-pretrain-full-v1/train-$JOBID.log"
+
+grep 'train_inner' "$LOG" | tail -5
+
+grep "valid on" "$LOG" | tail -5 # check if the 5 output we need is shown 
+
+### see checkpoint 
+ls -lh runs/full/heart-pretrain-full-v1/checkpoint*.pt
