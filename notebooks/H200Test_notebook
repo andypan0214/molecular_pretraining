@@ -55,3 +55,9 @@ sed -n '185,205p' model/pretrain/scripts/pretrain_smoke.sh
 ####
 grep -E 'batch_size|verdict=|resume_from=' \
   runs/smoke/heart-smoke-test-20261102-172519-j1013044/smoke_result-*.txt
+
+grep -n -B 20 -A 5 \
+  "Aborted\|core dumped\|terminate called\|malloc\|free()" \
+  runs/slurm/*1013044.err
+
+tail -50 runs/smoke/heart-smoke-test-20261102-172519-j1013044/train-1013044.log
