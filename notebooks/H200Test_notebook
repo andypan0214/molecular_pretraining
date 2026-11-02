@@ -30,3 +30,12 @@ sacct -j 1013044 \
   --format=JobID,State,Elapsed,ReqTRES,AllocTRES
 
 sacct -j 1013044 --format=JobID,State,Elapsed,ExitCode,NodeList,AllocTRES
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+tail -80 runs/slurm/*1013044.err
+
+tail -80 runs/slurm/*1013044.out
+
+sacct -j 1013044 \
+  --format=JobID,State,NodeList,AllocTRES%100
