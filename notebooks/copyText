@@ -215,5 +215,17 @@ BATCH_SIZE=4 \
 NUM_WORKERS=0 \
 bash scripts/pretrain_heart.sh
 
+## if pre-flight passed move foward to the next step 
+
+HEART_CONFIRM_FULL=1 \
+HEART_SMOKE_RUN="$RUN" \
+BATCH_SIZE=4 \
+NUM_WORKERS=0 \
+MIN_GPU_MEM_GB=14 \
+sbatch --mem=100G --gres=gpu:t4:1 \
+scripts/pretrain_heart.sh
+
+
+
 
 
