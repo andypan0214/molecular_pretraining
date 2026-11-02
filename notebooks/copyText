@@ -247,3 +247,19 @@ JOBID=XXXXXXX # replcate xxxxxx after the job id is save
 LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-pretrain-full-$JOBID.out"
 
 tail -f "$LOG"
+
+
+### check status of previous work 
+
+sacct -j 1011523 \
+  --format=JobID,JobName,State,Elapsed,MaxRSS,ReqMem,ExitCode
+
+### check error message 
+LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-pretrain-full-1011523.out"
+
+tail -60 "$LOG"
+
+#### if no error shown above :
+tail -40 "${LOG%.out}.err"
+
+#### check if any checkpoint exist
