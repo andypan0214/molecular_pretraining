@@ -270,3 +270,33 @@ tail -40 "${LOG%.out}.err"
 LOG="../../runs/full/heart-pretrain-full-v1/train-1011523.log"
 
 grep -n -B 35 -A 15 'Boost.Python.ArgumentError' "$LOG" | tail -90
+
+#### update github repo 
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+git status --short
+git pull --ff-only origin main
+git rev-parse --short HEAD
+
+should show: 1e68223 
+
+#### test dry run 
+
+cd model/pretrain
+
+RUN=$(find ../../runs/smoke \
+  -name 'smoke_result-1011488.txt' \
+  -printf '%h\n' | head -1)
+
+HEART_DRY_RUN=1 \
+HEART_CONFIRM_FULL=1 \
+BATCH_SIZE=4 \
+HEART_SMOKE_RUN="$RUN" \
+bash scripts/pretrain_heart.sh
+
+#### actual run 
+
+HEART_CONFIRM_FULL=1 \
+BATCH_SIZE=4 \
+HEART_SMOKE_RUN="$RUN" \
+sbatch --gres=gpu:t4:1 scripts/pretrain_heart.sh 
