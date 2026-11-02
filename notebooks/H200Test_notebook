@@ -45,3 +45,13 @@ cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 tail -60 runs/slurm/*1013044.err
 
 tail -60 runs/slurm/*1013044.out
+
+####
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+sed -n '185,205p' model/pretrain/scripts/pretrain_smoke.sh
+
+####
+grep -E 'batch_size|verdict=|resume_from=' \
+  runs/smoke/heart-smoke-test-20261102-172519-j1013044/smoke_result-*.txt
