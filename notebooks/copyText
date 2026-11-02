@@ -263,3 +263,10 @@ tail -60 "$LOG"
 tail -40 "${LOG%.out}.err"
 
 #### check if any checkpoint exist
+
+#### since the error happen at lapse 5000 it doesn't have time to create a checkpoint yet 
+
+### check the whole error message 
+LOG="../../runs/full/heart-pretrain-full-v1/train-1011523.log"
+
+grep -n -B 35 -A 15 'Boost.Python.ArgumentError' "$LOG" | tail -90
