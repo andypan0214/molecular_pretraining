@@ -197,4 +197,23 @@ MASTER_PORT=10086
 lr=1e-5
 wd=1e-4
 
+## before actul run pretrain.sh step make sure the following is pass 
+
+#### dry test 
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
+
+RUN=$(find ../../runs/smoke -name 'smoke_result-1011488.txt' -printf '%h\n' | head -1)
+
+echo "$RUN"
+
+once the pass smoke test work 
+
+HEART_DRY_RUN=1 \
+HEART_CONFIRM_FULL=1 \
+HEART_SMOKE_RUN="$RUN" \
+BATCH_SIZE=4 \
+NUM_WORKERS=0 \
+bash scripts/pretrain_heart.sh
+
+
 
