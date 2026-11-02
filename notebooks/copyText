@@ -393,6 +393,12 @@ find runs/smoke -type f -name 'smoke_result-*.txt' \
 
 find runs/smoke -type d -name '*1011488*'
 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+find runs/smoke -type f -name 'smoke_result-*.txt' \
+  -exec grep -H -E 'verdict=|batch_size=' {} \;
+
 ### make sure check point still here 
 cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 
