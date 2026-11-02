@@ -226,6 +226,24 @@ sbatch --mem=100G --gres=gpu:t4:1 \
 scripts/pretrain_heart.sh
 
 
+#### actual training 
+HEART_CONFIRM_FULL=1 \
+HEART_SMOKE_RUN="$RUN" \
+BATCH_SIZE=4 \
+NUM_WORKERS=0 \
+MIN_GPU_MEM_GB=14 \
+sbatch --mem=100G \
+       --gres=gpu:t4:1 \
+       scripts/pretrain_heart.sh
 
 
+Submitted batch job XXXXXXX # replace xxxxxx after the previous is submit 
 
+squeue -u "$USER"
+
+
+JOBID=XXXXXXX # replcate xxxxxx after the job id is save
+
+LOG="$HOME/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/heart-pretrain-full-$JOBID.out"
+
+tail -f "$LOG"
