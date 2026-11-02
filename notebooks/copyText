@@ -328,3 +328,52 @@ du -ch runs/full/heart-pretrain-full-v1/checkpoint*.pt | tail -1
 
 # 確認磁碟可用空間
 df -h .
+
+### save the result we have for now from T4 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+RUN="runs/full/heart-pretrain-full-v1"
+SNAP="runs/snapshots/heart-t4-b4"
+
+mkdir -p "$SNAP"
+
+cp "$RUN/train-1011588.log" "$SNAP/"
+cp model/pretrain/scripts/pretrain_heart.sh "$SNAP/"
+
+grep "valid on" "$RUN/train-1011588.log" \
+  > "$SNAP/validation_history.txt"
+
+ls -lh "$RUN"/checkpoint*.pt \
+  > "$SNAP/checkpoint_inventory.txt"
+
+### stop at latest checking point for t4 
+grep "Saved checkpoint" \
+  runs/full/heart-pretrain-full-v1/train-1011588.log | tail -3
+
+#### cancel current run: 
+scancel 1011588
+
+### confirm is cancel 
+sacct -j 1011588 --format=JobID,State,Elapsed,ExitCode
+
+### save currrent t4 results in 
+
+RUN="runs/full/heart-pretrain-full-v1"
+SNAP="runs/snapshots/heart-t4-b4"
+
+cp "$RUN/train-1011588.log" "$SNAP/"
+cp "$RUN/checkpoint_last.pt" "$SNAP/checkpoint_last_T4.pt"
+cp "$RUN/checkpoint_best.pt" "$SNAP/checkpoint_best_T4.pt"
+
+grep "valid on" "$RUN/train-1011588.log" \
+  > "$SNAP/validation_history.txt"
+
+du -sh "$SNAP"
+
+### testing H4 gpu 
+
+#SBATCH --gres=gpu:h200:1
+
+
+
