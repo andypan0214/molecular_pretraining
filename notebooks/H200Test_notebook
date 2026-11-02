@@ -61,3 +61,19 @@ grep -n -B 20 -A 5 \
   runs/slurm/*1013044.err
 
 tail -50 runs/smoke/heart-smoke-test-20261102-172519-j1013044/train-1013044.log
+
+
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
+
+RESUME_DIR=/home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/smoke/heart-smoke-test-20261102-172519-j1013044 \
+BATCH_SIZE=448 \
+MAX_UPDATE=20 \
+NUM_WORKERS=0 \
+sbatch --gres=gpu:h200:1 --time=00:30:00 \
+scripts/pretrain_smoke.sh
+
+
+sacct -j NEW_JOB_ID --format=JobID,State,Elapsed,ExitCode
+
+tail -40 /home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/*NEW_JOB_ID.err
