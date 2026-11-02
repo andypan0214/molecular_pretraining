@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --job-name=heart-pretrain-full
 #SBATCH --mem=100G
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:1 (change this in the futeru for h100 usage #SBATCH --gres=gpu:h200:1)
 #SBATCH --partition=gpu
 #SBATCH --time=2-00:00:00
 #SBATCH --signal=B:USR1@1800
