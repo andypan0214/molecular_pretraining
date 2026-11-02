@@ -375,5 +375,54 @@ du -sh "$SNAP"
 
 #SBATCH --gres=gpu:h200:1
 
+#### restrore back to t4 
+
+#### check if job all cancel 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+squeue -u "$USER"
+
+### check if the check point still exist 
+ls -lh runs/full/heart-pretrain-full-v1/checkpoint_last.pt
 
 
+### find t4 smoke test: 
+find runs/smoke -type f -name 'smoke_result-*.txt' \
+  -exec grep -l 'verdict=PASS' {} \;
+
+find runs/smoke -type d -name '*1011488*'
+
+### make sure check point still here 
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+RUN="runs/full/heart-pretrain-full-v1"
+
+ls -lh "$RUN/checkpoint_last.pt" "$RUN/checkpoint_best.pt"
+
+squeue -j 1011588
+
+
+#### restrore pretrain again 
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
+
+SMOKE_DIR=$(find ../../runs/smoke -type d -name '*1011488*' -print -quit)
+
+if [ -z "$SMOKE_DIR" ]; then
+    echo "ERROR: Previous T4 smoke result not found"
+else
+    HEART_CONFIRM_FULL=1 \
+    BATCH_SIZE=4 \
+    RUN_NAME=heart-pretrain-full-v1 \
+    HEART_SMOKE_RUN="$SMOKE_DIR" \
+    NUM_WORKERS=0 \
+    MIN_GPU_MEM_GB=14 \
+    sbatch --partition=gpu --gres=gpu:t4:1 scripts/pretrain_heart.sh
+fi 
+
+####  check submit
+squeue -u "$USER"
+
+### check if it resume: 
+
+tail -50 ../../runs/slurm/heart-pretrain-full-NEW_JOB_ID.out
