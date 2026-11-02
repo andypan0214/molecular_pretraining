@@ -39,3 +39,9 @@ tail -80 runs/slurm/*1013044.out
 
 sacct -j 1013044 \
   --format=JobID,State,NodeList,AllocTRES%100
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+tail -60 runs/slurm/*1013044.err
+
+tail -60 runs/slurm/*1013044.out
