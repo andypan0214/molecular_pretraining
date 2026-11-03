@@ -263,3 +263,15 @@ grep -E 'export HEART_(UNICORE_SRC|DATA_PATH)=' scripts/pretrain_heart-h200.sh
 sbatch --export=ALL,HEART_CONFIRM_FULL=1 scripts/pretrain_heart-h200.sh
 
 
+#### check status
+
+#JOBID=你的JobID 
+
+JOBID= 1013079
+LOG="runs/full/heart-pretrain-full-v1/train-$JOBID.log"
+
+grep 'train_inner' "$LOG" | tail -5
+
+grep "valid on" "$LOG" | tail -5 # check if the 5 output we need is shown 
+ we use this before
+
