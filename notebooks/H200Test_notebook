@@ -220,6 +220,13 @@ sacct -X \
 grep -E 'ups|wps|num_updates|train_inner' \
   "$HEART_OUTPUT_ROOT"/smoke/*/train-*.log | tail -40
 
+for job in 1013073 1013074 1013076 1013077; do
+  echo "=== $job ==="
+  find "$HEART_OUTPUT_ROOT/smoke" \
+    -name "smoke_result-${job}.txt" \
+    -exec grep -E 'max_update=|num_workers=' {} \;
+done
+
 ## actual training 
 
 export RUN_NAME=heart-h200-b448-v1
