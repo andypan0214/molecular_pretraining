@@ -432,3 +432,7 @@ squeue -u "$USER"
 ### check if it resume: 
 
 tail -50 ../../runs/slurm/heart-pretrain-full-NEW_JOB_ID.out
+
+####
+grep -E "RESUMING|Loaded checkpoint|loading checkpoint|num_updates" \
+  ../../runs/full/heart-pretrain-full-v1/train-1013046.log | head -15
