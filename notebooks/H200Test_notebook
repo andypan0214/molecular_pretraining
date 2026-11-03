@@ -117,9 +117,6 @@ sbatch --export=ALL \
 #### testing on the local hpc folder instead of scratch 
 cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
 
-# HEART source code on scratch
-export HEART_REPO=/scratch/ypan/heart-molecular-pretraining
-
 # Uni-Core stays under home
 export HEART_UNICORE_SRC=/home/ypan/heart_liver/model_train/third_party/Uni-Core
 
