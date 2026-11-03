@@ -213,6 +213,13 @@ find "$HEART_OUTPUT_ROOT/smoke" \
       "$1"
   ' _ {} \;
 
+sacct -X \
+  -j 1013071,1013073,1013074,1013076,1013077 \
+  --format=JobID,State,Elapsed,ElapsedRaw
+
+grep -E 'ups|wps|num_updates|train_inner' \
+  "$HEART_OUTPUT_ROOT"/smoke/*/train-*.log | tail -40
+
 ## actual training 
 
 export RUN_NAME=heart-h200-b448-v1
