@@ -82,7 +82,7 @@ export HEART_OUTPUT_ROOT=/scratch/ypan/heart-molecular-pretraining/runs
 export HEART_REPO=/scratch/ypan/heart-molecular-pretraining
 
 # Uni-Core stays under home
-export HEART_UNICORE_SRC=/home/ypan/heart_liver/model_train/third_partu_unicore
+export HEART_UNICORE_SRC=/home/ypan/heart_liver/model_train/third_party/Uni-Core
 
 # Original Uni-Mol ligand dataset stays under home
 export HEART_DATA_PATH=/home/ypan/heart_liver/model_train/UniMolRederenceligand_data/ligands
