@@ -232,31 +232,19 @@ done
 ## define where to store and arguement 
 cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
 
-export HEART_REPO=/home/ypan/heart_liver/model_train/heart-molecular-pretraining
-export HEART_OUTPUT_ROOT="$HEART_REPO/runs/h200"
-
-mkdir -p "$HEART_OUTPUT_ROOT"/{smoke,full,slurm}
-
-## check existance
 ls -lh scripts/pretrain_heart-h200.sh
-bash -n scripts/pretrain_heart-h200.sh
 
-find "$HEART_OUTPUT_ROOT/smoke" \
-  -name 'smoke_result-*.txt' \
-  -exec grep -l '^verdict=PASS$' {} \;
+mkdir -p /home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/h200/slurm
 
-export HEART_SMOKE_RUN="$HEART_OUTPUT_ROOT/smoke/heart-smoke-test-1013074"
+sbatch --export=ALL,HEART_CONFIRM_FULL=1 scripts/pretrain_heart-h200.sh
 
-grep -E 'verdict=|batch_size=|num_workers=' \
-  "$HEART_SMOKE_RUN"/smoke_result-*.txt
 
-export HEART_CONFIRM_FULL=1
-
-sbatch --export=ALL scripts/pretrain_heart-h200.sh
 
 ## check queue: 
 squeue -u "$USER" \
   -o "%.12i %.22j %.10T %.12M %.20R"
+
+grep -iE 'train|valid|loss' "$RUN_DIR/train-XXXXXXX.log" | tail -30
 
 
 
