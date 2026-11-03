@@ -449,5 +449,7 @@ grep "valid on" \
   "$RUN/train-1013046.log" \
   | tail -15
 
+## check both training and validation loss
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 
-
+grep -E "train \||valid \|" runs/full/heart-pretrain-full-v1/train-1013046.log | tail -30
