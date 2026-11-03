@@ -4,8 +4,8 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --job-name=heart-pretrain-full
 #SBATCH --mem=200G
-#SBATCH --gres=gpu:1
 #SBATCH --gres=gpu:h200:1
+#SBATCH --partition=gpu
 #SBATCH --time=2-00:00:00
 #SBATCH --signal=B:USR1@1800
 #SBATCH --output=/home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/slurm/%x-%j.out
