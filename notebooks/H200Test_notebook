@@ -199,6 +199,17 @@ run_h200_test 16 4
 run_h200_test 16 8
 run_h200_test 16 12
 
+#### check smoke speed for optimization 
+find "$HEART_OUTPUT_ROOT/smoke" \
+  -name 'smoke_result-*.txt' \
+  -exec sh -c '
+    echo "=========================="
+    echo "$1"
+    grep -E \
+      "verdict=|batch_size=|num_workers=|peak_rss_total_mb=|train_exit=" \
+      "$1"
+  ' _ {} \;
+
 ## actual training 
 
 export RUN_NAME=heart-h200-b448-v1
