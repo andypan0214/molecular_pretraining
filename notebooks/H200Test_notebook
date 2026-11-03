@@ -115,6 +115,7 @@ sbatch --export=ALL \
   scripts/pretrain_smoke.sh
 
 #### testing on the local hpc folder instead of scratch 
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
 
 # HEART source code on scratch
 export HEART_REPO=/scratch/ypan/heart-molecular-pretraining
@@ -124,4 +125,50 @@ export HEART_UNICORE_SRC=/home/ypan/heart_liver/model_train/third_party/Uni-Core
 
 # Original Uni-Mol ligand dataset stays under home
 export HEART_DATA_PATH=//home/ypan/heart_liver/model_train/UniMolReference//ligand_data/ligands/
+
+## directory for h200 output 
+export HEART_OUTPUT_ROOT="$HEART_REPO/runs/h200"
+mkdir -p "$HEART_OUTPUT_ROOT"/{smoke,full,slurm}
+
+## Run H200 smoke tests
+
+## 2 worker 
+BATCH_SIZE=448 NUM_WORKERS=2 MAX_UPDATE=10 \
+sbatch --export=ALL \
+  --job-name=heart-h200-w2 \
+  --partition=gpu \
+  --gres=gpu:h200:1 \
+  --cpus-per-task=6 --mem=100G \
+  --time=00:30:00 \
+  --output="$HEART_OUTPUT_ROOT/slurm/%x-%j.out" \
+  --error="$HEART_OUTPUT_ROOT/slurm/%x-%j.err" \
+  scripts/pretrain_smoke.sh
+
+## 4 worker 
+BATCH_SIZE=448 NUM_WORKERS=4 MAX_UPDATE=10 \
+sbatch --export=ALL \
+  --job-name=heart-h200-w4 \
+  --partition=gpu \
+  --gres=gpu:h200:1 \
+  --cpus-per-task=6 --mem=100G \
+  --time=00:30:00 \
+  --output="$HEART_OUTPUT_ROOT/slurm/%x-%j.out" \
+  --error="$HEART_OUTPUT_ROOT/slurm/%x-%j.err" \
+  scripts/pretrain_smoke.sh
+
+## check status:
+squeue -u "$USER"
+
+find "$HEART_OUTPUT_ROOT/smoke" \
+  -name 'smoke_result-*.txt' \
+  -exec grep -H -E 'verdict=|batch_size=|num_workers=|peak_rss_total_mb=' {} \;
+
+## actual training 
+
+export RUN_NAME=heart-h200-b448-v1
+export HEART_CONFIRM_FULL=1
+export BATCH_SIZE=448
+export HEART_SMOKE_RUN=/path/to/successful/h200/smoke/run
+
+
 
