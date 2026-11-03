@@ -246,6 +246,12 @@ squeue -u "$USER" \
 
 grep -iE 'train|valid|loss' "$RUN_DIR/train-XXXXXXX.log" | tail -30
 
+## check error
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+tail -60 runs/h200/slurm/heart-h200-full-1013078.err
+
+tail -60 runs/h200/slurm/heart-h200-full-1013078.out
 
 
 
