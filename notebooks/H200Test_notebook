@@ -174,12 +174,38 @@ find "$HEART_OUTPUT_ROOT/smoke" \
   -name 'smoke_result-*.txt' \
   -exec grep -H -E 'verdict=|batch_size=|num_workers=|peak_rss_total_mb=' {} \;
 
+
+#### test efficiency
+run_h200_test() {
+    local cpus="$1"
+    local workers="$2"
+
+    BATCH_SIZE=448 NUM_WORKERS="$workers" MAX_UPDATE=20 \
+    sbatch --export=ALL \
+      --job-name="h200-c${cpus}-w${workers}" \
+      --partition=gpu \
+      --gres=gpu:h200:1 \
+      --cpus-per-task="$cpus" \
+      --mem=200G \
+      --time=00:45:00 \
+      --output="$HEART_OUTPUT_ROOT/slurm/%x-%j.out" \
+      --error="$HEART_OUTPUT_ROOT/slurm/%x-%j.err" \
+      scripts/pretrain_smoke.sh
+}
+
+#### 
+run_h200_test 8 4
+run_h200_test 16 4
+run_h200_test 16 8
+run_h200_test 16 12
+
 ## actual training 
 
 export RUN_NAME=heart-h200-b448-v1
 export HEART_CONFIRM_FULL=1
 export BATCH_SIZE=448
 export HEART_SMOKE_RUN=/path/to/successful/h200/smoke/run
+
 
 
 
