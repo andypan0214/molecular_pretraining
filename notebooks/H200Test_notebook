@@ -244,7 +244,7 @@ sbatch --export=ALL,HEART_CONFIRM_FULL=1 scripts/pretrain_heart-h200.sh
 squeue -u "$USER" \
   -o "%.12i %.22j %.10T %.12M %.20R"
 
-grep -iE 'train|valid|loss' "$RUN_DIR/train-XXXXXXX.log" | tail -30
+grep -iE 'train|valid|loss' "$RUN_DIR/train-1013079.log" | tail -30
 
 ## check error
 cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
