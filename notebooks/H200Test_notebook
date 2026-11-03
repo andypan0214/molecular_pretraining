@@ -273,5 +273,14 @@ LOG="runs/full/heart-pretrain-full-v1/train-$JOBID.log"
 grep 'train_inner' "$LOG" | tail -5
 
 grep "valid on" "$LOG" | tail -5 # check if the 5 output we need is shown 
- we use this before
 
+## check before checkpoint is finish
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+JOBID=你的新JobID
+LOG="runs/h200/full/heart-h200-b448-v1/train-$JOBID.log"
+
+tail -20 "$LOG"
+
+grep 'train_inner' "$LOG" | tail -5
