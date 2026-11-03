@@ -115,6 +115,7 @@ sbatch --export=ALL \
   scripts/pretrain_smoke.sh
 
 #### testing on the local hpc folder instead of scratch 
+
 cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
 
 # Uni-Core stays under home
@@ -124,7 +125,10 @@ export HEART_UNICORE_SRC=/home/ypan/heart_liver/model_train/third_party/Uni-Core
 export HEART_DATA_PATH=//home/ypan/heart_liver/model_train/UniMolReference//ligand_data/ligands/
 
 ## directory for h200 output 
+export HEART_REPO=/home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
 export HEART_OUTPUT_ROOT="$HEART_REPO/runs/h200"
+
 mkdir -p "$HEART_OUTPUT_ROOT"/{smoke,full,slurm}
 
 ## Run H200 smoke tests
