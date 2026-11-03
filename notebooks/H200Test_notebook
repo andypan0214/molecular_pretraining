@@ -245,7 +245,7 @@ find "$HEART_OUTPUT_ROOT/smoke" \
   -name 'smoke_result-*.txt' \
   -exec grep -l '^verdict=PASS$' {} \;
 
-export HEART_SMOKE_RUN="$HEART_OUTPUT_ROOT/smoke/heart-smoke-test-XXXX"
+export HEART_SMOKE_RUN="$HEART_OUTPUT_ROOT/smoke/heart-smoke-test-1013074"
 
 grep -E 'verdict=|batch_size=|num_workers=' \
   "$HEART_SMOKE_RUN"/smoke_result-*.txt
