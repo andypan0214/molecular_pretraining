@@ -85,7 +85,7 @@ export HEART_REPO=/scratch/ypan/heart-molecular-pretraining
 export HEART_UNICORE_SRC=/home/ypan/heart_liver/model_train/third_party/Uni-Core
 
 # Original Uni-Mol ligand dataset stays under home
-export HEART_DATA_PATH=/home/ypan/heart_liver/model_train/UniMolRederenceligand_data/ligands
+export HEART_DATA_PATH=//home/ypan/heart_liver/model_train/UniMolReference//ligand_data/ligands/
 
 # NEW H200 smoke-test results on scratch
 export HEART_OUTPUT_ROOT=/scratch/ypan/heart-molecular-pretraining/runs
