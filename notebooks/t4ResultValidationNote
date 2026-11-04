@@ -1,0 +1,14 @@
+set up environement on HPC: add before HEART_best_checkpoint_embeding_evaluation
+
+%%bash
+# HPC environment setup (shell only)
+module load git/2.42.0
+module load miniconda3/py311_24.1.2
+conda env list
+conda activate heart_gpu
+echo "Activated Python: $(which python)"
+python -c 'import torch; print("PyTorch:", torch.__version__)'
+# This registers heart_gpu as a Jupyter kernel if ipykernel is installed.
+python -m ipykernel install --user --name heart_gpu --display-name "Python (heart_gpu)"
+
+
