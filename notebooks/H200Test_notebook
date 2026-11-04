@@ -307,6 +307,17 @@ ls -lh "$RUN_DIR"/checkpoint*.pt
 ### check how long it allow 
 scontrol show job 1013079 | grep -E "RunTime=|TimeLimit=|EndTime="
 
+#### check if there a checkpoint for us once it stop because of time limit
+
+RUN_DIR=/home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/h200/full/heart-h200-b448-v1
+
+echo "=== Checkpoints ==="
+ls -lh --time-style=long-iso "$RUN_DIR"/checkpoint*.pt 2>/dev/null
+
+echo "=== Checkpoint and resume configuration ==="
+grep -nE 'restore-file|reset-|save-dir|save-interval|keep-|checkpoint|resume|max-update' \
+/home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain/scripts/pretrain_heart-h200.sh
+
 #### actual update: 
 grep -n "max-update\|time=" \
 /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain/scripts/pretrain_heart-h200.sh
