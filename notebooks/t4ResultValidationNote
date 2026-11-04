@@ -71,6 +71,44 @@ print("Model directory exists:", MODEL_ROOT.exists())
 print("Uni-Mol package exists:", (MODEL_ROOT / "unimol/__init__.py").exists())
 
 from unicore import tasks, utils
+
 import unimol
 
 print("Uni-Mol successfully imported from:", unimol.__file__)
+
+#### section c update 
+
+
+# Section C — Load validation batch
+
+import torch
+
+task.load_dataset("valid", combine=False, epoch=1)
+dataset = task.dataset("valid")
+
+print("Validation dataset length:", len(dataset))
+
+itr = task.get_batch_iterator(
+    dataset=dataset,
+    max_sentences=BATCH_SIZE,
+    max_positions=model.max_positions(),
+    ignore_invalid_inputs=True,
+    required_batch_size_multiple=1,
+    seed=SEED,
+    num_workers=0,
+    epoch=1,
+    disable_iterator_cache=True,
+).next_epoch_itr(shuffle=False)
+
+first = next(iter(itr))
+
+print("Batch keys:", list(first.keys()))
+print("net_input keys:", list(first.get("net_input", {})))
+
+for k, v in first.get("net_input", {}).items():
+    if torch.is_tensor(v):
+        print(k, tuple(v.shape), v.dtype)
+    else:
+        print(k, type(v).__name__)
+
+
