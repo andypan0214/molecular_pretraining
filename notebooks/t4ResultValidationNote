@@ -12,3 +12,33 @@ python -c 'import torch; print("PyTorch:", torch.__version__)'
 python -m ipykernel install --user --name heart_gpu --display-name "Python (heart_gpu)"
 
 
+import subprocess
+import sys
+import os
+
+setup = """
+source /etc/profile.d/modules.sh 2>/dev/null || true
+
+module load git/2.42.0
+module load miniconda3/py311_24.1.2
+
+conda env list
+conda activate heart_gpu
+
+which python
+python -c "import torch; print('PyTorch:', torch.__version__)"
+
+python -m ipykernel install --user \
+    --name heart_gpu \
+    --display-name "Python (heart_gpu)"
+"""
+
+result = subprocess.run(
+    ["bash", "-lc", setup],
+    capture_output=True,
+    text=True
+)
+
+print(result.stdout)
+print(result.stderr)
+print("Exit code:", result.returncode)
