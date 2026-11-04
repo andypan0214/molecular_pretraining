@@ -488,4 +488,101 @@ ls -lh "$RUN_DIR"/checkpoint_best.pt \
        "$RUN_DIR"/checkpoint_last.pt \
        "$RUN_DIR"/checkpoint_1_1000000.pt
 
+### check pt results 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+RUN_DIR="$PWD/runs/full/heart-pretrain-full-v1"
+
+ls -lh "$RUN_DIR"/checkpoint*.pt
+
+python - <<'PY'
+import torch
+
+path = "runs/full/heart-pretrain-full-v1/checkpoint_best.pt"
+
+ckpt = torch.load(
+    path,
+    map_location="cpu",
+    weights_only=False
+)
+
+print("Checkpoint keys:")
+print(list(ckpt.keys()))
+
+print("\nTraining state:")
+for key in ["epoch", "num_updates", "best_loss", "val_loss"]:
+    if key in ckpt:
+        print(f"{key}: {ckpt[key]}")
+
+print("\nModel tensors:")
+model = ckpt.get("model", {})
+print("Total tensors:", len(model))
+
+total_params = sum(v.numel() for v in model.values() if hasattr(v, "numel"))
+print("Total parameters:", f"{total_params:,}")
+PY
+
+#### within jupytor notebook run 
+
+node 1 
+
+from pathlib import Path
+import torch
+
+ROOT = Path(
+    "/home/ypan/heart_liver/model_train/"
+    "heart-molecular-pretraining"
+)
+
+RUN_DIR = ROOT / "runs/full/heart-pretrain-full-v1"
+CKPT = RUN_DIR / "checkpoint_best.pt"
+
+print("Checkpoint exists:", CKPT.exists())
+print("Checkpoint size:", round(CKPT.stat().st_size / 1024**2, 2), "MB")
+
+checkpoint = torch.load(
+    CKPT,
+    map_location="cpu",
+    weights_only=False
+)
+
+print("\nCheckpoint keys:")
+print(list(checkpoint.keys()))
+
+print("\nTraining state:")
+for key in ["epoch", "num_updates", "best_loss", "val_loss"]:
+    if key in checkpoint:
+        print(f"{key}: {checkpoint[key]}")
+
+model_state = checkpoint.get("model", {})
+
+total_params = sum(
+    tensor.numel()
+    for tensor in model_state.values()
+    if isinstance(tensor, torch.Tensor)
+)
+
+print("\nModel tensors:", len(model_state))
+print("Total parameters:", f"{total_params:,}")
+
+## node2 compaere last checkpoint and best checkpoint
+
+for name in ["checkpoint_best.pt", "checkpoint_last.pt"]:
+    path = RUN_DIR / name
+    ckpt = torch.load(
+        path,
+        map_location="cpu",
+        weights_only=False
+    )
+
+    print(f"\n{name}")
+    print("Keys:", list(ckpt.keys()))
+
+    extra = ckpt.get("extra_state", {})
+    print("Extra state:", extra)
+
+    print("Optimizer history:",
+          ckpt.get("optimizer_history", []))
+
 
