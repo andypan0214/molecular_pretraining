@@ -284,3 +284,22 @@ LOG="runs/h200/full/heart-h200-b448-v1/train-$JOBID.log"
 tail -20 "$LOG"
 
 grep 'train_inner' "$LOG" | tail -5
+
+### h200a check perform 
+
+squeue -j 1013079
+
+## training losss
+RUN_DIR=/home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/h200/full/heart-h200-b448-v1
+
+LOG="$RUN_DIR/train-1013079.log"
+
+grep 'train_inner' "$LOG" | tail -10
+
+## validation loss 
+grep "valid on" "$LOG" | tail -10
+
+
+## check current checkpoint 
+
+ls -lh "$RUN_DIR"/checkpoint*.pt
