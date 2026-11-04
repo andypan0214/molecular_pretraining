@@ -42,3 +42,35 @@ result = subprocess.run(
 print(result.stdout)
 print(result.stderr)
 print("Exit code:", result.returncode)
+
+#### add this part and replace part B from sys.path.insert(0, str(MODEL_ROOT))) to import unimol
+
+import os
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(
+    "/home/ypan/heart_liver/model_train/heart-molecular-pretraining"
+)
+
+MODEL_ROOT = PROJECT_ROOT / "model"
+UNICORE_ROOT = Path(
+    "/home/ypan/heart_liver/model_train/third_party/Uni-Core"
+)
+
+# Add both package parent directories
+for path in [MODEL_ROOT, UNICORE_ROOT]:
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
+
+os.chdir(MODEL_ROOT)
+
+print("Python:", sys.executable)
+print("Current directory:", os.getcwd())
+print("Model directory exists:", MODEL_ROOT.exists())
+print("Uni-Mol package exists:", (MODEL_ROOT / "unimol/__init__.py").exists())
+
+from unicore import tasks, utils
+import unimol
+
+print("Uni-Mol successfully imported from:", unimol.__file__)
