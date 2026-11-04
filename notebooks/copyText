@@ -457,3 +457,35 @@ grep -E "train \||valid \|" runs/full/heart-pretrain-full-v1/train-1013046.log |
 grep -n 30 "train-1013046.log" # check training loss 
 grep "valid on" "train-1013046.log" | tail -n 15 # check validation loss 
 
+
+### final check for t4 batch 4 jobID 1013046
+
+## confirm job submit complete
+sacct -j 1013046 --format=JobID,State,ExitCode,Elapsed
+
+## check last training loss/validation loss
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+RUN_DIR="$PWD/runs/h200/full/heart-pretrain-full-v1"
+
+LOG="$RUN_DIR/train-1013046.log"
+
+ls -lh "$LOG"
+
+echo "===== FINAL TRAINING LOSS ====="
+grep 'train_inner' "$LOG" | tail -10
+
+echo "===== FINAL VALIDATION ====="
+grep -iE 'valid on|valid_inner|valid_loss|valid .*loss' "$LOG" | tail -20
+
+
+## check best save point 
+
+echo "===== CHECKPOINTS ====="
+
+ls -lh "$RUN_DIR"/checkpoint_best.pt \
+       "$RUN_DIR"/checkpoint_last.pt \
+       "$RUN_DIR"/checkpoint_1_1000000.pt
+
+
