@@ -200,3 +200,9 @@ find runs -type f \( -name "*1013125*" -o -name "train.log" \)
 
 tail -f /path/to/train.log
 
+tail -n 80 runs/h200/continual/heart-lipid-t4-smoke-v1/train-1013125.log
+
+tail -f runs/h200/continual/heart-lipid-t4-smoke-v1/train-1013125.log
+
+ls -lh runs/h200/continual/heart-lipid-t4-smoke-v1/checkpoint*.pt
+
