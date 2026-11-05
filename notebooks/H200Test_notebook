@@ -341,4 +341,14 @@ cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
 
 HEART_CONFIRM_FULL=1 sbatch --export=ALL scripts/pretrain_heart-h200.sh
 
+### check is indeed resunme from previous job: 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+grep -Ei "RESUMING|checkpoint_last|resume|random initialisation" \
+runs/h200/slurm/heart-h200-full-1013205.out | head -20
+
+tail -n 20 runs/h200/full/heart-h200-b448-v1/train-1013205.log
+
+squeue -j 1013205
 
