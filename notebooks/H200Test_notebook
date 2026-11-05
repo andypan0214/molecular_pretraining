@@ -350,5 +350,18 @@ runs/h200/slurm/heart-h200-full-1013205.out | head -20
 
 tail -n 20 runs/h200/full/heart-h200-b448-v1/train-1013205.log
 
+
+### h200a check perform 
+
 squeue -j 1013205
+
+## training losss
+RUN_DIR=/home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/h200/full/heart-h200-b448-v1
+
+LOG="$RUN_DIR/train-1013205.log"
+
+grep 'train_inner' "$LOG" | tail -10
+
+## validation loss 
+grep "valid on" "$LOG" | tail -10
 
