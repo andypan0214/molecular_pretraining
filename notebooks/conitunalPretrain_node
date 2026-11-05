@@ -1,0 +1,39 @@
+## check environment 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model
+
+source /home/ypan/.conda/etc/profile.d/conda.sh
+conda activate /home/ypan/.conda/envs/heart_gpu
+
+python pretrain/tools/check_continual_registry.py --user-dir ./unimol
+
+## check general checkpoint：
+
+ls -lh runs/h200/full/heart-h200-b448-v1/checkpoint*.pt
+
+## check if it sucessfully create conforcal for each smile structure 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
+
+python - <<'PY'
+from lipid_library.validate_lmdb import slot_profile, runtime_view
+
+root = "/home/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands"
+
+for split in ("train", "valid"):
+    p = slot_profile(f"{root}/{split}.lmdb", 256)
+    print(split, p["n_records"], p["profiles"])
+    print({k: runtime_view(k) for k in p["profiles"]})
+PY
+
+## make sure lipidlike stucture are in the file 
+
+mkdir -p /home/ypan/heart_liver/model_train/lipid_library/{input,logs}
+  
+/home/ypan/heart_liver/model_train/lipid_library/input/LUMI_virtual_library_training_lipidLike.xlsx
+
+sinfo -o "%P %l %c %m"
+   
+### check small amount of lipid 
+/home/ypan/heart_liver/model_train/lipid_library/input/LUMI_virtual_library_training_lipidLike.xlsx
+
