@@ -39,3 +39,102 @@ sinfo -o "%P %l %c %m"
 ### check small amount of lipid 
 /home/ypan/heart_liver/model_train/lipid_library/input/LUMI_virtual_library_training_lipidLike.xlsx
 
+## check files: 
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
+
+ls -lh /home/ypan/heart_liver/model_train/lipid_library/input/LUMI_virtual_library_training_lipidLike.xlsx
+
+ls scripts/lipid_library/01_building_blocks.sh
+
+environement setting: 
+export HEART_CONFIRM_LIPID=1
+export STORE_2D=0
+
+sbatch --export=ALL scripts/lipid_library/01_building_blocks.sh
+
+
+## examine test: 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining/model/pretrain
+
+mkdir -p /home/ypan/heart_liver/model_train/lipid_library/logs
+
+cat > smoke_lipid_100.sh <<'BASH'
+#!/bin/bash
+#SBATCH --job-name=lipid-smoke-100
+#SBATCH --partition=short
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=8G
+#SBATCH --time=02:00:00
+#SBATCH --output=/home/ypan/heart_liver/model_train/lipid_library/logs/lipid-smoke-%j.out
+#SBATCH --error=/home/ypan/heart_liver/model_train/lipid_library/logs/lipid-smoke-%j.err
+
+set -euo pipefail
+
+ROOT=/home/ypan/heart_liver/model_train
+PY=/home/ypan/.conda/envs/heart_gpu/bin/python
+INPUT=$ROOT/lipid_library/input/LUMI_virtual_library_training_lipidLike.xlsx
+DICT=$ROOT/UniMolReference/ligand_data/ligands/dict.txt
+OUT=$ROOT/lipid_library/smoke_100
+
+cd "$ROOT/heart-molecular-pretraining/model/pretrain"
+mkdir -p "$OUT"
+
+echo "=== Stage 01: Building blocks ==="
+"$PY" -m lipid_library.building_blocks "$INPUT" -o "$OUT/bb"
+
+echo "=== Stage 02: Enumerate 100 lipids ==="
+"$PY" -m lipid_library.enumerate_library "$OUT/bb" \
+  -o "$OUT/enum" --limit 100 --chunk-size 100
+
+"$PY" -m lipid_library.enumerate_library "$OUT/bb" \
+  -o "$OUT/enum" --limit 100 --chunk-size 100 --check-complete
+
+echo "=== Stage 03: Deduplication ==="
+"$PY" -m lipid_library.dedup "$OUT/enum" \
+  -o "$OUT/dedup" --require-complete
+
+echo "=== Stage 03b + 04: Conformers and LMDB ==="
+ARGS=(
+  --no-store-2d
+  --n-3d 10
+  --records-per-shard 50
+  --limit 100
+  --dict "$DICT"
+  --drop-list "$OUT/dedup/drop_combo_indexes.csv.gz"
+)
+
+"$PY" -m lipid_library.lmdb_writer "$OUT/enum" \
+  -o "$OUT/lmdb" "${ARGS[@]}" --partition
+
+"$PY" -m lipid_library.lmdb_writer "$OUT/enum" \
+  -o "$OUT/lmdb" "${ARGS[@]}" --shard 0 --num-shards 1
+
+echo "=== Stage 05: Finalize ==="
+"$PY" -m lipid_library.lmdb_writer "$OUT/enum" \
+  -o "$OUT/lmdb" "${ARGS[@]}" --finalize --array-size 1
+
+echo "=== Training / Validation Split ==="
+"$PY" -m lipid_library.splits "$OUT/lmdb" \
+  --valid-shards 1 --allow-smoke
+
+echo "=== LMDB Validation ==="
+"$PY" -m lipid_library.validate_lmdb \
+  --manifest "$OUT/lmdb/manifest.json" \
+  --dict "$DICT" --expect-slots 10 --all
+
+echo "=== LIPID SMOKE TEST PASSED ==="
+echo "Dataset: $OUT/lmdb/splits.json"
+BASH
+
+sbatch smoke_lipid_100.sh
+
+## check status 
+
+squeue -u $USER
+
+tail -f /home/ypan/heart_liver/model_train/lipid_library/logs/lipid-smoke-*.out
+
+
