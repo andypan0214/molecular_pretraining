@@ -9,7 +9,9 @@ python pretrain/tools/check_continual_registry.py --user-dir ./unimol
 
 ## check general checkpoint：
 
-ls -lh runs/h200/full/heart-h200-b448-v1/checkpoint*.pt
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+find . -type f -name "checkpoint*.pt" -printf '%p %s bytes\n' | head -30
 
 ## check if it sucessfully create conforcal for each smile structure 
 
