@@ -187,3 +187,16 @@ sbatch \
   --job-name=heart-t4-continual-smoke \
   --export=ALL \
   /tmp/heart-continual-t4-smoke.sh
+
+#### check smoke test
+squeue -j 1013125
+
+sacct -j 1013125 \
+  --format=JobID,JobName,State,Elapsed,ExitCode,MaxRSS
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+find runs -type f \( -name "*1013125*" -o -name "train.log" \)
+
+tail -f /path/to/train.log
+
