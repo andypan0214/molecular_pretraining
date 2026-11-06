@@ -27,3 +27,15 @@ git diff --cached --name-only | grep -E '(^runs/|\.pt$|\.pth$|\.lmdb$|\.zip$)'
 
 git commit -m "Add HEART lipid continual pretraining pipeline"
 git push origin main
+
+### check if github cli exist 
+
+which gh
+
+### authorized from online 
+gh auth login --hostname github.com --git-protocol https
+
+
+gh auth setup-git
+gh auth status
+git push origin main
