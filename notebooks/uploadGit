@@ -64,4 +64,14 @@ git fetch origin
 
 git log --oneline --left-right --graph HEAD...origin/main
 
+####
+git status --short
+git branch backup-before-sync-20261106
 
+git rebase origin/main
+
+git status
+git log -3 --oneline
+git push origin main
+
+git status -sb
