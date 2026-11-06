@@ -19,6 +19,10 @@ git status --short
 git diff --cached --stat
 git diff --cached --name-only
 
+### confirm not pushing unwanted code 
+git diff --cached --name-only | grep -E '(^runs/|\.pt$|\.pth$|\.lmdb$|\.zip$)'
+
+
 ## actual push 
 
 git commit -m "Add HEART lipid continual pretraining pipeline"
