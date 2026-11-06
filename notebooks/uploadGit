@@ -97,3 +97,17 @@ mv model/HEART_best_checkpoint_embedding_evaluation.ipynb \
 ###
 
 git rebase origin/main
+
+
+###
+
+git checkout --theirs model/pretrain/README_CONTINUAL.md
+git add model/pretrain/README_CONTINUAL.md
+
+git checkout --theirs model/pretrain/README_CONTINUAL.md
+git add model/pretrain/README_CONTINUAL.md
+
+git status
+git log -3 --oneline
+
+git push origin main
