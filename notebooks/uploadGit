@@ -43,7 +43,17 @@ git push origin main
 
 ssh-keygen -t ed25519 -C "heart-hpc-github" -f ~/.ssh/id_ed25519_github
 
-https://github.com/settings/keys?utm_source=chatgpt.com
-
 cat ~/.ssh/id_ed25519_github.pub
 
+### set up passkey on github: 
+https://github.com/settings/keys?utm_source=chatgpt.com
+
+### test ssh on hpc
+ssh -i ~/.ssh/id_ed25519_github -o IdentitiesOnly=yes -T git@github.com
+
+
+#### utilized key
+
+git config core.sshCommand "ssh -i ~/.ssh/id_ed25519_github -o IdentitiesOnly=yes"
+git remote set-url origin git@github.com:andypan0214/heart-molecular-pretraining.git
+git push origin main
