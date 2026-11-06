@@ -365,3 +365,49 @@ grep 'train_inner' "$LOG" | tail -10
 ## validation loss 
 grep "valid on" "$LOG" | tail -10
 
+#### check if pretrain is good enoguh to push 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+# 1. Check ignored training files
+git check-ignore runs/h200/full/heart-h200-b448-v1/checkpoint_best.pt
+
+# 2. Check if any run files were tracked previously
+git ls-files runs/h200
+
+# 3. Review changes
+git status
+
+# 4. Stage and review files
+git add .
+git diff --cached --stat
+
+
+## before push git: 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+# Check the entire runs directory
+git check-ignore -v runs/h200/full/heart-h200-b448-v1/checkpoint_best.pt
+
+# Check whether anything inside runs is already tracked
+git ls-files runs/
+
+### if this show up: runs/slurm/.gitkeep run 
+
+git rm -r --cached --ignore-unmatch runs/
+
+## push git 
+git add .gitignore
+git status
+git diff --cached --stat
+
+git commit -m "Exclude all training runs from Git"
+git push origin main
+
+### check what file are being track right now 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+git ls-files runs/
+
+
