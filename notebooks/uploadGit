@@ -1,0 +1,25 @@
+## push github
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+git add model/pretrain/lipid_library/
+git add model/pretrain/scripts/lipid_library/
+git add model/pretrain/scripts/continual_pretrain_heart-h200.sh
+git add model/pretrain/scripts/pretrain_heart-h200.sh
+git add model/pretrain/configs/continual_pretrain.yaml
+git add model/pretrain/tests/
+git add model/pretrain/tools/
+git add model/unimol/data/merged_sampling_dataset.py
+git add model/unimol/tasks/unimol_contrastive_continual.py
+git add model/pretrain/README_CONTINUAL.md
+git add model/pretrain/CONTINUAL_PRETRAIN_CHANGE_REPORT.md
+
+## check what is going to push 
+git status --short
+git diff --cached --stat
+git diff --cached --name-only
+
+## actual push 
+
+git commit -m "Add HEART lipid continual pretraining pipeline"
+git push origin main
