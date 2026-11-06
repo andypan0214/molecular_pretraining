@@ -35,7 +35,13 @@ which gh
 ### authorized from online 
 gh auth login --hostname github.com --git-protocol https
 
-
 gh auth setup-git
 gh auth status
 git push origin main
+
+## there is no cli on HPC use SSH authorizae instead 
+
+ssh-keygen -t ed25519 -C "heart-hpc-github" -f ~/.ssh/id_ed25519_github
+
+cat ~/.ssh/id_ed25519_github.pub
+
