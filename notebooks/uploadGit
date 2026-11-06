@@ -111,3 +111,18 @@ git status
 git log -3 --oneline
 
 git push origin main
+
+## move back the temp remove file
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+BACKUP="$HOME/heart_notebooks_backup_20261106"
+
+cp -p "$BACKUP/H200_HPC_original.ipynb" \
+  model/HEART_H200_checkpoint_best_embedding_evaluation_HPC.ipynb
+
+cp -p "$BACKUP/HEART_HPC_original.ipynb" \
+  model/HEART_best_checkpoint_embedding_evaluation_HPC.ipynb
+
+ls -lh model/*embedding_evaluation*.ipynb
+git status --short
