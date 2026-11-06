@@ -57,3 +57,11 @@ ssh -i ~/.ssh/id_ed25519_github -o IdentitiesOnly=yes -T git@github.com
 git config core.sshCommand "ssh -i ~/.ssh/id_ed25519_github -o IdentitiesOnly=yes"
 git remote set-url origin git@github.com:andypan0214/heart-molecular-pretraining.git
 git push origin main
+
+### check different 
+
+git fetch origin
+
+git log --oneline --left-right --graph HEAD...origin/main
+
+
