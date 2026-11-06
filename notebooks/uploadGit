@@ -75,3 +75,25 @@ git log -3 --oneline
 git push origin main
 
 git status -sb
+
+#### save both side 
+
+BACKUP="$HOME/heart_notebooks_backup_20261106"
+mkdir -p "$BACKUP"
+
+cp -p model/HEART_H200_checkpoint_best_embedding_evaluation.ipynb "$BACKUP/"
+cp -p model/HEART_best_checkpoint_embedding_evaluation.ipynb "$BACKUP/"
+
+ls -lh "$BACKUP"
+
+### temp remove: 
+
+mv model/HEART_H200_checkpoint_best_embedding_evaluation.ipynb \
+   "$BACKUP/H200_HPC_original.ipynb"
+
+mv model/HEART_best_checkpoint_embedding_evaluation.ipynb \
+   "$BACKUP/HEART_HPC_original.ipynb"
+
+###
+
+git rebase origin/main
