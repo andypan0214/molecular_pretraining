@@ -43,5 +43,7 @@ git push origin main
 
 ssh-keygen -t ed25519 -C "heart-hpc-github" -f ~/.ssh/id_ed25519_github
 
+https://github.com/settings/keys?utm_source=chatgpt.com
+
 cat ~/.ssh/id_ed25519_github.pub
 
