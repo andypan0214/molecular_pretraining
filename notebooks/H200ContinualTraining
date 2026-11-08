@@ -119,5 +119,7 @@ model/pretrain/scripts/lipid_library/04_conformers_250cpu.sbatch
 
 ### Barh test
 
-sed -n '65,220p' \
-model/pretrain/scripts/lipid_library/04_conformers_250cpu.sbatch
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+grep -nE 'benchmark|pilot|dry.run|WORKERS|STRIDE|resume|sbatch' \
+model/pretrain/scripts/lipid_library/submit_lipid_library_250cpu.sh
