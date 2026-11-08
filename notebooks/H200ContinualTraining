@@ -232,6 +232,5 @@ cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 
 cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 
-SMOKE_ROOT=/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu_retry1 \
-bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --submit
+ROOT="${SMOKE_ROOT:-/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu}"
 bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --verify
