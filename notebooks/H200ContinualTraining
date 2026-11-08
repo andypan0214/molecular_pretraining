@@ -138,3 +138,23 @@ ls -lh /home/ypan/heart_liver/model_train/lipid_library/{bb,enum,dedup,lmdb}/ 2>
 
 ls -l model/pretrain/scripts/lipid_library/*250cpu*
 
+
+## batch test 100 lipid
+
+#### check environment 
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --check
+
+
+#### run test 
+
+bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --submit
+
+#### check status: 
+
+bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --status
+
+
+
+
