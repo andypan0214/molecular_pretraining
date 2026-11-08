@@ -46,3 +46,34 @@ done
 EOF
 
 chmod +x ~/test_h200_cpu_limit.sh
+
+
+## test limit of CPU and GPU mem
+
+cat > ~/test_h200_resources.sh <<'EOF'
+#!/bin/bash
+
+PARTITION="gpu"
+
+for CPU in 250 300 400; do
+    for MEM in 300 400 500; do
+
+        echo "======================================"
+        echo "Testing CPU=$CPU, RAM=${MEM}GB"
+
+        sbatch --test-only \
+            --partition="$PARTITION" \
+            --nodes=1 \
+            --ntasks=1 \
+            --cpus-per-task="$CPU" \
+            --mem="${MEM}G" \
+            --gres=gpu:h200:1 \
+            --time=00:05:00 \
+            --wrap="echo Resource test"
+
+        echo
+    done
+done
+EOF
+
+bash ~/test_h200_resources.sh
