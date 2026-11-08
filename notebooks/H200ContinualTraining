@@ -156,5 +156,12 @@ bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --submit
 bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --status
 
 
+### check running job:
 
+sacct -j 1013330 --format=JobID,State,Elapsed,MaxRSS,AllocCPUS
+
+tail -n 60 \
+/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu/logs/smoke-1013330.out
+
+squeue -j 1013330
 
