@@ -73,5 +73,12 @@ sstat -j 1013414.batch --format=JobID,AveRSS,MaxRSS,MaxVMSize
 
 scontrol show job 1013414 | grep -E 'JobState=|NumCPUs=|MinMemory|TimeLimit=|NodeList='
 
+####
+
+sstat -j 1013414.batch \
+  --format=JobID,AveCPU,AveRSS,MaxRSS,MaxVMSize
+
+ls -lh /home/ypan/heart_liver/model_train/lipid_library/logs/*1013414*
+
 ### resume 
 bin/heart library --resume --dry-run
