@@ -223,3 +223,9 @@ python -c 'import json; p="/home/ypan/heart_liver/model_train/lipid_library/smok
 
 model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh
 
+
+##
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --verify
