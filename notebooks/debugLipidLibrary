@@ -53,7 +53,8 @@ cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
 
 bin/heart library --resume --dry-run
 
-
+####
+bin/heart library --resume --submit
 
 
 ### resume 
