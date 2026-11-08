@@ -100,3 +100,11 @@ sed -n '1,180p' model/pretrain/scripts/lipid_library/04_conformers_250cpu.sbatch
 
 
 bash ~/test_h200_resources.sh
+
+
+####
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+grep -nE 'partition|cpus-per-task|mem=|time=|gres|gpus|srun|python|multiprocess|worker' \
+model/pretrain/scripts/lipid_library/04_conformers_250cpu.sbatch
