@@ -56,6 +56,13 @@ bin/heart library --resume --dry-run
 ####
 bin/heart library --resume --submit
 
+### check status
+
+squeue -u $USER -o "%.18i %.24j %.12T %.12M %.30R"
+
+####
+
+sacct -j 1013411 --format=JobID,JobName,State,ExitCode,Elapsed
 
 ### resume 
 bin/heart library --resume --dry-run
