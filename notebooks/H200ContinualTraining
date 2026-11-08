@@ -1,3 +1,5 @@
+#### stage lipid library construction
+
 #### check  meme usage  
 
 RUN=/home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/h200/full/heart-h200-b448-v1
@@ -86,6 +88,15 @@ sbatch --partition=gpu \
   --job-name=heart-resource-test \
   --wrap='echo "Node: $(hostname)"; echo "Allocated CPUs: $SLURM_CPUS_PER_TASK"; sleep 5'
 
+#### check upload stage 4 and automization pipeline stage
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+git status --short
+
+sed -n '1,220p' model/pretrain/scripts/lipid_library/submit_lipid_library_250cpu.sh
+
+sed -n '1,180p' model/pretrain/scripts/lipid_library/04_conformers_250cpu.sbatch
 
 
 bash ~/test_h200_resources.sh
