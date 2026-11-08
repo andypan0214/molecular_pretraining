@@ -182,6 +182,20 @@ tail -n 30 "$ROOT/logs/smoke-1013330.err"
 cat "$ROOT/lmdb/finalize_report.json"
 
 
+####
+
+sacct -j 1013330 \
+  --format=JobID,State,ExitCode,DerivedExitCode,Elapsed
+
+####
+
+ROOT=/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu
+
+grep -n -C 5 -E \
+'Unexpected stored 2d conformer|Traceback|Error|FAIL|Assertion' \
+"$ROOT/logs/smoke-1013330.err" \
+"$ROOT/logs/smoke-1013330.out"
+
 
 squeue -j 1013330
 
