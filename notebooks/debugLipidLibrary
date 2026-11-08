@@ -35,6 +35,20 @@ bin/heart library --resume --dry-run
 cat /home/ypan/heart_v2_acceptance/20261108-153348/task63/*.err
 
 
+#### check task 63 from stage 2
+
+for f in /home/ypan/heart_liver/model_train/lipid_library/logs/*1013343_63*; do
+    echo "===== $f ====="
+    cat "$f"
+done
+
+#### if no error message: 
+
+sacct -j 1013343_63 \
+  --format=JobID,JobName,State,ExitCode,Reason,NodeList,Elapsed,MaxRSS
+
+
+
 
 ### resume 
 bin/heart library --resume --dry-run
