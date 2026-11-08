@@ -76,4 +76,16 @@ for CPU in 250 300 400; do
 done
 EOF
 
+sbatch --partition=gpu \
+  --nodes=1 \
+  --ntasks=1 \
+  --cpus-per-task=250 \
+  --mem=400G \
+  --gres=gpu:1 \
+  --time=00:02:00 \
+  --job-name=heart-resource-test \
+  --wrap='echo "Node: $(hostname)"; echo "Allocated CPUs: $SLURM_CPUS_PER_TASK"; sleep 5'
+
+
+
 bash ~/test_h200_resources.sh
