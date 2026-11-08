@@ -1,0 +1,48 @@
+#### check  meme usage  
+
+RUN=/home/ypan/heart_liver/model_train/heart-molecular-pretraining/runs/h200/full/heart-h200-b448-v1
+
+ls -lh "$RUN"/memory-*.tsv
+
+awk -F'\t' '
+NR>1 && $6+0 > max {max=$6+0}
+END {printf "Peak sampled cgroup RAM: %.1f GB\n", max/1024}
+' "$RUN"/memory-*.tsv
+
+
+### test maximum cpu allow 
+
+
+cat > ~/test_h200_cpu_limit.sh <<'EOF'
+#!/bin/bash
+
+echo "================================="
+echo " H200 CPU Allocation Limit Test"
+echo "================================="
+
+for CPU in 64 80 96 112 128 144 160 176 192 200
+do
+    echo ""
+    echo "===== Testing ${CPU} CPUs ====="
+
+    sbatch --test-only \
+        --partition=gpu \
+        --gres=gpu:h200:1 \
+        --nodes=1 \
+        --ntasks=1 \
+        --cpus-per-task="$CPU" \
+        --mem=200G \
+        --time=00:05:00 \
+        --wrap="hostname"
+
+    STATUS=$?
+
+    if [ "$STATUS" -eq 0 ]; then
+        echo "RESULT: ACCEPTED ($CPU CPUs)"
+    else
+        echo "RESULT: REJECTED ($CPU CPUs)"
+    fi
+done
+EOF
+
+chmod +x ~/test_h200_cpu_limit.sh
