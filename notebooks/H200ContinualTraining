@@ -123,3 +123,8 @@ cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 
 grep -nE 'benchmark|pilot|dry.run|WORKERS|STRIDE|resume|sbatch' \
 model/pretrain/scripts/lipid_library/submit_lipid_library_250cpu.sh
+
+
+#### dry run 
+
+bash model/pretrain/scripts/lipid_library/submit_lipid_library_250cpu.sh --dry-run
