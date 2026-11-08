@@ -310,3 +310,17 @@ done
 
 echo "JOB IDS: $ids"
 [ -z "$ids" ] || squeue -j "$ids" -o "%.12i %.18j %.10T %.15R"
+
+#### actual run 15M lipid library
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+SCRIPT=model/pretrain/scripts/lipid_library/submit_lipid_library_production_now.sh
+
+bash -n "$SCRIPT" && echo "Syntax PASS"
+
+cat "$SCRIPT"
+
+bash model/pretrain/scripts/lipid_library/submit_lipid_library_production_now.sh
+
+
