@@ -199,3 +199,16 @@ grep -n -C 5 -E \
 
 squeue -j 1013330
 
+####
+
+ROOT=/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu
+
+tail -n 35 "$ROOT/logs/smoke-1013330.out"
+
+tail -n 35 "$ROOT/logs/smoke-1013330.err"
+
+####
+
+tail -n 100 \
+model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh
+
