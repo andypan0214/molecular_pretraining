@@ -219,6 +219,7 @@ cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 grep -n -B 15 -A 15 "Unexpected stored 2d conformer" \
 model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh
 
+python -c 'import json; p="/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu/lmdb/manifest.json"; x=json.load(open(p)); v=x.get("stored_2d_conformer"); print("stored_2d_conformer =",repr(v),"type =",type(v).__name__); print("coordinate_slots_per_record =",x.get("coordinate_slots_per_record"))'
 
 model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh
 
