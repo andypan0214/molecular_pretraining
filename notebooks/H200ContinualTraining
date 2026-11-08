@@ -210,5 +210,15 @@ tail -n 35 "$ROOT/logs/smoke-1013330.err"
 ####
 
 tail -n 100 \
+
+
+####
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+grep -n -B 15 -A 15 "Unexpected stored 2d conformer" \
+model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh
+
+
 model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh
 
