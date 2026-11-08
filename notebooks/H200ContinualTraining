@@ -237,4 +237,14 @@ ROOT="${SMOKE_ROOT:-/home/ypan/heart_liver/model_train/lipid_library/smoke_250cp
 
 SMOKE_ROOT=/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu_retry1 \
 bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --submit
-bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --verify
+
+
+/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu/
+
+squeue -u ypan
+rm -rI /home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu
+
+
+SMOKE_ROOT=/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu_retry1 \
+bash model/pretrain/scripts/lipid_library/smoke_lipid_250cpu.sh --submit
+
