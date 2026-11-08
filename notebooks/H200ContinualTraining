@@ -128,3 +128,13 @@ model/pretrain/scripts/lipid_library/submit_lipid_library_250cpu.sh
 #### dry run 
 
 bash model/pretrain/scripts/lipid_library/submit_lipid_library_250cpu.sh --dry-run
+
+
+### generate lipid library brench test
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+ls -lh /home/ypan/heart_liver/model_train/lipid_library/{bb,enum,dedup,lmdb}/ 2>&1 | head -60
+
+ls -l model/pretrain/scripts/lipid_library/*250cpu*
+
