@@ -163,5 +163,15 @@ sacct -j 1013330 --format=JobID,State,Elapsed,MaxRSS,AllocCPUS
 tail -n 60 \
 /home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu/logs/smoke-1013330.out
 
+### check error: 
+
+ROOT=/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu
+
+tail -n 100 "$ROOT/logs/smoke-1013330.err"
+
+tail -n 80 "$ROOT/logs/smoke-1013330.out"
+
+find "$ROOT" -type f \( -name "*.err" -o -name "*.log" \)
+
 squeue -j 1013330
 
