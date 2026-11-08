@@ -281,3 +281,32 @@ echo "JOB IDS: $ids"
 sacct -j JOB_IDS \
   --format=JobID,JobName,State,ExitCode,AllocCPUS,ReqMem,NodeList
 
+####
+
+ids=""
+for cpu in 200 250 300 400; do
+  for mem in 400 500; do
+    result=$(sbatch --parsable \
+      --partition=gpu \
+      --nodelist=cmri-gpu04 \
+      --nodes=1 --ntasks=1 \
+      --cpus-per-task="$cpu" \
+      --mem="${mem}G" \
+      --gres=gpu:h200:1 \
+      --time=00:01:00 \
+      --job-name="H200_${cpu}_${mem}" \
+      --output="$HOME/h200-test-%j.out" \
+      --wrap='echo NODE=$(hostname); echo CPUs=$(nproc); free -h' 2>&1)
+
+    if [[ "$result" =~ ^[0-9]+ ]]; then
+      id="${result%%;*}"
+      echo "ACCEPTED: CPU=$cpu RAM=${mem}G JOB=$id"
+      ids="${ids:+$ids,}$id"
+    else
+      echo "REJECTED: CPU=$cpu RAM=${mem}G | $result"
+    fi
+  done
+done
+
+echo "JOB IDS: $ids"
+[ -z "$ids" ] || squeue -j "$ids" -o "%.12i %.18j %.10T %.15R"
