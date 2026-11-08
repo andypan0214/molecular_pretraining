@@ -328,6 +328,12 @@ cat model/pretrain/scripts/lipid_library/submit_lipid_library_production_now.sh
 
 bash model/pretrain/scripts/lipid_library/submit_lipid_library_production_now.sh
 
+####
 
+SCRIPT=model/pretrain/scripts/lipid_library/submit_lipid_library_production_now.sh
+
+grep -nE 'STAGE04_|H200_|GPU_PARTITION|CPU_PARTITION|ROOT=|STORE_2D|RECORD|SHARD|GRES' "$SCRIPT"
+
+bash "$SCRIPT"
 
 
