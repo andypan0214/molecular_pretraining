@@ -64,5 +64,14 @@ squeue -u $USER -o "%.18i %.24j %.12T %.12M %.30R"
 
 sacct -j 1013411 --format=JobID,JobName,State,ExitCode,Elapsed
 
+
+####
+
+sstat -j 1013414.batch --format=JobID,AveRSS,MaxRSS,MaxVMSize
+
+####
+
+scontrol show job 1013414 | grep -E 'JobState=|NumCPUs=|MinMemory|TimeLimit=|NodeList='
+
 ### resume 
 bin/heart library --resume --dry-run
