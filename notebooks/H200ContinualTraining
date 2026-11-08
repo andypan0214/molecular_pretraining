@@ -363,6 +363,19 @@ git diff --name-status origin/main -- \
   model/pretrain/scripts/lipid_library/ \
   model/pretrain/lipid_library/
 
+### 
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+mkdir -p /home/ypan/heart_liver/model_train/hpc_lipid_scripts_backup
+
+cp -a model/pretrain/scripts/lipid_library/. \
+  /home/ypan/heart_liver/model_train/hpc_lipid_scripts_backup/
+
+git log --oneline HEAD..origin/main
+
+git diff --stat HEAD..origin/main -- model/pretrain/
+
+###
 git switch -c fix/lipid-production-hpc
 
 git add -u -- \
@@ -378,6 +391,9 @@ git diff --cached --check
 git commit -m "Preserve HPC lipid production pipeline before task 63 fix"
 
 git push -u origin fix/lipid-production-hpc
+
+
+
 
 
 
