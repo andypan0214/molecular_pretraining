@@ -173,5 +173,15 @@ tail -n 80 "$ROOT/logs/smoke-1013330.out"
 
 find "$ROOT" -type f \( -name "*.err" -o -name "*.log" \)
 
+
+####
+
+ROOT=/home/ypan/heart_liver/model_train/lipid_library/smoke_250cpu
+
+tail -n 30 "$ROOT/logs/smoke-1013330.err"
+cat "$ROOT/lmdb/finalize_report.json"
+
+
+
 squeue -j 1013330
 
