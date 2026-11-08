@@ -321,6 +321,13 @@ bash -n "$SCRIPT" && echo "Syntax PASS"
 
 cat "$SCRIPT"
 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+bash -n model/pretrain/scripts/lipid_library/submit_lipid_library_production_now.sh && echo "Syntax PASS"
+cat model/pretrain/scripts/lipid_library/submit_lipid_library_production_now.sh
+
 bash model/pretrain/scripts/lipid_library/submit_lipid_library_production_now.sh
+
+
 
 
