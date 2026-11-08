@@ -47,6 +47,12 @@ done
 sacct -j 1013343_63 \
   --format=JobID,JobName,State,ExitCode,Reason,NodeList,Elapsed,MaxRSS
 
+### 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+
+bin/heart library --resume --dry-run
+
 
 
 
