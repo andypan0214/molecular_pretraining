@@ -111,5 +111,13 @@ cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 sed -n '65,220p' \
 model/pretrain/scripts/lipid_library/04_conformers_250cpu.sbatch
 
+
 grep -nE 'partition|cpus-per-task|mem=|time=|gres|gpus|srun|python|multiprocess|worker' \
+model/pretrain/scripts/lipid_library/04_conformers_250cpu.sbatch
+
+
+
+### Barh test
+
+sed -n '65,220p' \
 model/pretrain/scripts/lipid_library/04_conformers_250cpu.sbatch
