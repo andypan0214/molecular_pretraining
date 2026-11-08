@@ -1,1 +1,32 @@
+####
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+
+git switch v2/lipid-continual
+git log -1 --oneline
+
+ls model/pretrain/lipid_library/stage04_pool.py
+
+#### 
+
+ls -lh model/pretrain/lipid_library/inputs/*.xlsx
+
+ls -lh /home/ypan/heart_liver/model_train/lipid_library/input/
+
+#### 
+
+mkdir -p /home/ypan/heart_liver/model_train/lipid_library/input
+
+cp model/pretrain/lipid_library/inputs/*.xlsx \
+  /home/ypan/heart_liver/model_train/lipid_library/input/
+
+#### check pipeline 
+
+bin/heart check
+bin/heart baseline
+bin/heart library --status
+
+#### if previous stage have no erro r
+
+bin/heart library --resume --dry-run
 
