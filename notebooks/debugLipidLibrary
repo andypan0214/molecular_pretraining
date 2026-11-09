@@ -155,3 +155,26 @@ PY
 
 cat /home/ypan/heart_liver/model_train/lipid_library/lmdb/shard-00000/shard.json
 
+
+####
+
+python - <<'PY'
+import json
+
+with open("shard-00000/shard.json") as f:
+    r = json.load(f)
+
+for key in [
+    "n_records",
+    "n_skipped",
+    "n_records_with_2d_fill",
+    "n_2d_filled_total",
+    "n_3d_success_hist",
+    "n_distinct_3d_hist",
+    "unsupported_atoms",
+    "skip_reasons"
+]:
+    print(f"{key}: {r.get(key)}")
+PY
+
+
