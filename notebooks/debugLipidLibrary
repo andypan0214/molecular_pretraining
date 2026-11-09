@@ -178,3 +178,34 @@ for key in [
 PY
 
 
+####
+
+python - <<'PY'
+import glob, json
+
+tot = dict(records=0, with_2d=0, slots_2d=0, skipped=0)
+files = glob.glob("shard-*/shard.json")
+
+for path in files:
+    with open(path) as f:
+        r = json.load(f)
+    tot["records"] += r["n_records"]
+    tot["with_2d"] += r["n_records_with_2d_fill"]
+    tot["slots_2d"] += r["n_2d_filled_total"]
+    tot["skipped"] += r["n_skipped"]
+
+n = tot["records"]
+print("Completed shards:", len(files))
+print("Accepted records:", n)
+print("Skipped:", tot["skipped"])
+
+if n:
+    print("Records with 2D fallback:",
+          f"{tot['with_2d']/n:.2%}")
+    print("2D fallback slots:",
+          f"{tot['slots_2d']/(n*10):.2%}")
+PY
+
+
+
+
