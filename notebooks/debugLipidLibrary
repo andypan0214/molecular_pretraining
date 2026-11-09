@@ -82,3 +82,76 @@ ls -lh /home/ypan/heart_liver/model_train/lipid_library/logs/*1013414*
 
 ### resume 
 bin/heart library --resume --dry-run
+
+#### 
+
+python - <<'PY'
+import os, glob, json, pickle
+import lmdb
+import numpy as np
+
+root = "/home/ypan/heart_liver/model_train/lipid_library/lmdb"
+
+# Only inspect completed shards with receipts.
+shards = sorted(
+    p for p in glob.glob(f"{root}/shard-*")
+    if os.path.isfile(f"{p}/shard.json")
+    and os.path.isfile(f"{p}/train.lmdb")
+)
+
+print("Completed shard candidates:", len(shards))
+assert shards, "No completed shards found"
+
+path = shards[0]
+with open(f"{path}/shard.json") as f:
+    receipt = json.load(f)
+
+print("Inspecting:", path)
+print("Expected records:", receipt["n_records"])
+print("Expected slots:", receipt["coordinate_slots_per_record"])
+
+env = lmdb.open(
+    f"{path}/train.lmdb",
+    subdir=False,
+    readonly=True,
+    lock=False,
+    readahead=False,
+)
+
+with env.begin() as txn:
+    print("LMDB entries:", txn.stat()["entries"])
+    assert txn.stat()["entries"] == receipt["n_records"]
+
+    for i in range(min(20, receipt["n_records"])):
+        raw = txn.get(str(i).encode("ascii"))
+        assert raw is not None, f"Missing key: {i}"
+
+        rec = pickle.loads(raw)
+        assert set(rec) == {"smi", "atoms", "coordinates"}
+
+        atoms = rec["atoms"]
+        coords = rec["coordinates"]
+
+        assert isinstance(rec["smi"], str)
+        assert len(coords) == 10
+
+        for xyz in coords:
+            a = np.asarray(xyz)
+            assert a.shape == (len(atoms), 3)
+            assert np.isfinite(a).all()
+
+        if i == 0:
+            print("SMILES:", rec["smi"])
+            print("Atoms:", len(atoms))
+            print("Coordinate slots:", len(coords))
+            print("First coordinate shape:",
+                  np.asarray(coords[0]).shape)
+
+env.close()
+print("PASS: Sampled LMDB records have correct format")
+PY
+
+#### check QC 
+
+cat /home/ypan/heart_liver/model_train/lipid_library/lmdb/shard-00000/shard.json
+
