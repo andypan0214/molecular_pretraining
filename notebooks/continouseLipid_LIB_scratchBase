@@ -11,3 +11,9 @@ bin/heart \
   library --status
 
 
+find /scratch/ypan/heart_liver/model_train/lipid_library/logs \
+  -type f | grep 1013414
+
+bin/heart \
+  --set paths.lipid_root=/scratch/ypan/heart_liver/model_train/lipid_library \
+  library --resume --dry-run
