@@ -17,3 +17,24 @@ find /scratch/ypan/heart_liver/model_train/lipid_library/logs \
 bin/heart \
   --set paths.lipid_root=/scratch/ypan/heart_liver/model_train/lipid_library \
   library --resume --dry-run
+
+####
+
+cd /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+
+BASE=/scratch/ypan/heart_liver/model_train
+
+OPTS=(
+  --set paths.base="$BASE"
+  --set paths.repo_v2="$BASE/heart-molecular-pretraining-v2"
+  --set paths.general_data="$BASE/UniMolReference/ligand_data/ligands"
+  --set paths.lipid_root="$BASE/lipid_library"
+  --set paths.lipid_input="$BASE/lipid_library/input/LUMI_virtual_library_training_lipidLike.xlsx"
+  --set paths.lipid_pilot_root="$BASE/lipid_library/pilot_v2"
+  --set paths.unicore_src="$BASE/third_party/Uni-Core"
+)
+
+bin/heart "${OPTS[@]}" library --resume --dry-run
+
+### only run after prvious are sure
+bin/heart "${OPTS[@]}" library --resume --submit
