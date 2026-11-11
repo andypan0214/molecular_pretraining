@@ -1,0 +1,13 @@
+squeue -u "$USER"
+
+sacct -j 1013414,1013415 \
+  --format=JobID,JobName,State,Elapsed,ExitCode
+
+BASE=/scratch/ypan/heart_liver/model_train
+LIPID=$BASE/lipid_library
+
+bin/heart \
+  --set paths.lipid_root="$LIPID" \
+  library --status
+
+
