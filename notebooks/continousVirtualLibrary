@@ -47,6 +47,35 @@ with env.begin() as txn:
 
 env.close()
 
+#### check LMDB 
+
+/home/ypan/.conda/envs/heart_gpu/bin/python - <<'PY'
+import lmdb
+
+base = "/scratch/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands"
+
+for name in ["train.lmdb", "valid.lmdb"]:
+    path = f"{base}/{name}"
+
+    env = lmdb.open(
+        path,
+        readonly=True,
+        lock=False,
+        readahead=False,
+        subdir=False,
+    )
+
+    with env.begin() as txn:
+        count = txn.stat()["entries"]
+        first = next(iter(txn.cursor()), None)
+
+        print(f"{name}:")
+        print(f"  Number of records: {count:,}")
+        print(f"  First record accessible: {first is not None}")
+
+    env.close()
+PY
+
 ### check all the orignla path 
 
 cd /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
