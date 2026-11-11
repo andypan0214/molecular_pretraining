@@ -119,4 +119,21 @@ echo "========== 5. FINALIZATION FILES =========="
 ls -lh "$LIPID/lmdb/"{partition_index.json,lmdb_writer_config.json,stage04_progress.json,manifest.json,finalize_report.json,library_ready.json} 2>&1
 echo "========== AUDIT FINISHED =========="
 
+#### check lipid construction 
+
+HOME_LIG=/home/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands
+SCR_LIG=/scratch/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands
+
+rsync -rnc --itemize-changes "$HOME_LIG/" "$SCR_LIG/"
+echo "Exit code: $?"
+
+HOME_BASE=/home/ypan/heart_liver/model_train
+SCR_BASE=/scratch/ypan/heart_liver/model_train
+
+CKPT=runs/h200/full/heart-h200-b448-v1/checkpoint_best.pt
+
+sha256sum \
+  "$HOME_BASE/heart-molecular-pretraining/$CKPT" \
+  "$SCR_BASE/heart-molecular-pretraining/$CKPT"
+
 
