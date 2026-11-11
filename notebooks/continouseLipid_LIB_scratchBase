@@ -52,3 +52,13 @@ tail -n 80 /scratch/ypan/heart_liver/model_train/lipid_library/logs/lipid-04-poo
 
 sacct -j 1013861 \
   --format=JobID,JobName,State,Elapsed,ExitCode,Submit,Start,End
+
+### original json file 
+
+python -c "import json; p='/scratch/ypan/heart_liver/model_train/lipid_library/lmdb/lmdb_writer_config.json'; d=json.load(open(p)); print('Fingerprint:',d['fingerprint']); print('Drop list:',d['config'].get('drop_list')); print('Scientific options:',{k:d['config'].get(k) for k in ['n_3d','store_2d','max_try','records_per_shard']})"
+
+
+
+
+
+
