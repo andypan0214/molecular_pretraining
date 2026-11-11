@@ -157,5 +157,18 @@ grep -n -C 8 -E \
   'only supports|failed validation|intentional changes|--base' \
   heart_scratch_relocation.py
 
+## resume check dry run 
+
+cd /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+
+bin/heart --config config/heart_v2_scratch.yaml library --resume --dry-run
+
+## actual run if pass 
+
+bin/heart --config config/heart_v2_scratch.yaml library --resume --submit
+
+squeue -u "$USER"
+
+
 
 
