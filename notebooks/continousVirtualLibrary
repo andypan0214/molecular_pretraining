@@ -99,4 +99,24 @@ python -c "import lmdb; print('LMDB OK')"
 
 python -c "import lmdb; p='/scratch/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands/'; [(lambda e,n: (print(n, 'records:', e.stat()['entries']), e.close()))(lmdb.open(p+n,readonly=True,lock=False,readahead=False,subdir=False),n) for n in ['train.lmdb','valid.lmdb']]"
 
+#### check lipid library 
+
+BASE=/scratch/ypan/heart_liver/model_train
+REPO=$BASE/heart-molecular-pretraining-v2
+LIPID=$BASE/lipid_library
+
+echo "========== 1. DATA SIZE =========="
+du -sh "$LIPID"/*
+echo "========== 2. LIBRARY STAGES =========="
+cd "$REPO"
+bin/heart --set paths.lipid_root="$LIPID" library --status
+echo "========== 3. CONFORMER SHARDS =========="
+find "$LIPID/lmdb" -maxdepth 1 -type d -name 'shard-*' | wc -l
+find "$LIPID/lmdb" -maxdepth 2 -name shard.json | wc -l
+echo "========== 4. SLURM JOBS =========="
+sacct -j 1013414,1013415 --format=JobID,JobName,State,Elapsed,ExitCode
+echo "========== 5. FINALIZATION FILES =========="
+ls -lh "$LIPID/lmdb/"{partition_index.json,lmdb_writer_config.json,stage04_progress.json,manifest.json,finalize_report.json,library_ready.json} 2>&1
+echo "========== AUDIT FINISHED =========="
+
 
