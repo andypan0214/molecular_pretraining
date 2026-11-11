@@ -44,5 +44,11 @@ stage 4: 1013860
 stage 5: 1013861
 
 #### check error message 
+
+tail -n 80 /scratch/ypan/heart_liver/model_train/lipid_library/logs/lipid-04-pool-1013860.err
+
+tail -n 80 /scratch/ypan/heart_liver/model_train/lipid_library/logs/lipid-04-pool-1013860.out
+
+
 sacct -j 1013861 \
   --format=JobID,JobName,State,Elapsed,ExitCode,Submit,Start,End
