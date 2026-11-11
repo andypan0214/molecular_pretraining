@@ -145,5 +145,6 @@ cd /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
 python heart_scratch_relocation.py
 
 
-
+python heart_scratch_relocation.py \
+  --base /scratch/ypan/heart_liver/model_train
 
