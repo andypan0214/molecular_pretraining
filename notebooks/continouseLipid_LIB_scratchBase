@@ -78,6 +78,67 @@ sha256sum \
 
 
 
+## check if there anything else different
+
+cd /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/model/pretrain
+
+python - <<'PY'
+import json
+import os
+from argparse import Namespace
+from lipid_library import lmdb_writer as lw
+from lipid_library import provenance
+
+base = "/scratch/ypan/heart_liver/model_train/lipid_library"
+out = os.path.join(base, "lmdb")
+products = os.path.join(base, "enum")
+
+with open(os.path.join(out, "lmdb_writer_config.json")) as f:
+    saved = json.load(f)
+
+old = saved["config"]
+opts = Namespace(**{
+    k: old[k] for k in lw.SCIENTIFIC_OPTIONS
+})
+opts.drop_list = os.path.join(base, "dedup", "drop_combo_indexes.csv.gz")
+opts.dict_path = os.path.join(
+    os.path.dirname(base),
+    "UniMolReference", "ligand_data", "ligands", "dict.txt"
+)
+
+new = lw.writer_config(opts, products)
+
+print("=== STAGE 04 CONFIG DIFFERENCES ===")
+differences = []
+for key in sorted(set(old) | set(new)):
+    if old.get(key) != new.get(key):
+        differences.append(key)
+        print(f"{key}:")
+        print(f"  OLD: {old.get(key)}")
+        print(f"  NEW: {new.get(key)}")
+
+print("\nOriginal fingerprint:", saved["fingerprint"])
+print("New fingerprint:", provenance.fingerprint(new))
+print("Different fields:", differences)
+print("Only drop_list changed:", differences == ["drop_list"])
+
+print("\n=== PARTITION CONFIG DIFFERENCES ===")
+partition_path = os.path.join(
+    out, "shard_inputs", "partition_config.json"
+)
+if os.path.exists(partition_path):
+    with open(partition_path) as f:
+        partition = json.load(f)
+    current = lw.partition_config(opts, products)
+    p_diffs = [
+        k for k in sorted(set(partition["config"]) | set(current))
+        if partition["config"].get(k) != current.get(k)
+    ]
+    print("Different fields:", p_diffs)
+else:
+    print("Partition config not found")
+PY
+
 
 
 
