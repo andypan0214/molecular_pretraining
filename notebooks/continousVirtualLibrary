@@ -92,3 +92,11 @@ grep -RnI \
   '/home/ypan/heart_liver' \
   config/ bin/ model/ tools/
 
+#### 
+
+which python
+python -c "import lmdb; print('LMDB OK')"
+
+python -c "import lmdb; p='/scratch/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands/'; [(lambda e,n: (print(n, 'records:', e.stat()['entries']), e.close()))(lmdb.open(p+n,readonly=True,lock=False,readahead=False,subdir=False),n) for n in ['train.lmdb','valid.lmdb']]"
+
+
