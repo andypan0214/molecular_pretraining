@@ -136,7 +136,7 @@ sha256sum \
   "$HOME_BASE/heart-molecular-pretraining/$CKPT" \
   "$SCR_BASE/heart-molecular-pretraining/$CKPT"
 
-##
+## storage usage check 
 
 echo "=== Home filesystem ==="
 df -h /home/ypan
@@ -149,6 +149,17 @@ du -sh /home/ypan/heart_liver/model_train
 
 echo "=== Remaining ligand data ==="
 du -sh /home/ypan/heart_liver/model_train/UniMolReference/ligand_data 2>/dev/null || echo "Ligand directory removed"
+
+### check previous work process 
+ps -u "$USER" -o pid,etime,stat,cmd | grep '[r]sync'
+
+kill -TERM 123456
+
+ps -p 123456 -o pid,stat,cmd
+
+ls -lah /home/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands/
+
+du -sh /home/ypan/heart_liver/model_train/
 
 
 
