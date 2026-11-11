@@ -136,4 +136,20 @@ sha256sum \
   "$HOME_BASE/heart-molecular-pretraining/$CKPT" \
   "$SCR_BASE/heart-molecular-pretraining/$CKPT"
 
+##
+
+echo "=== Home filesystem ==="
+df -h /home/ypan
+
+echo "=== Home usage ==="
+du -sh /home/ypan
+
+echo "=== HEART project usage ==="
+du -sh /home/ypan/heart_liver/model_train
+
+echo "=== Remaining ligand data ==="
+du -sh /home/ypan/heart_liver/model_train/UniMolReference/ligand_data 2>/dev/null || echo "Ligand directory removed"
+
+
+
 
