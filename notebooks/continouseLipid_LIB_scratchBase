@@ -72,6 +72,10 @@ for key, value in sorted(d.items()):
 PY
 
 
+sha256sum \
+  /home/ypan/heart_liver/model_train/lipid_library/dedup/drop_combo_indexes.csv.gz \
+  /scratch/ypan/heart_liver/model_train/lipid_library/dedup/drop_combo_indexes.csv.gz
+
 
 
 
