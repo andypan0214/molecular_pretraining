@@ -38,3 +38,8 @@ bin/heart "${OPTS[@]}" library --resume --dry-run
 
 ### only run after prvious are sure
 bin/heart "${OPTS[@]}" library --resume --submit
+
+#### check status
+
+sacct -j 1013861 \
+  --format=JobID,JobName,State,Elapsed,ExitCode,Submit,Start,End
