@@ -40,6 +40,9 @@ bin/heart "${OPTS[@]}" library --resume --dry-run
 bin/heart "${OPTS[@]}" library --resume --submit
 
 #### check status
+stage 4: 1013860 
+stage 5: 1013861
 
+#### check error message 
 sacct -j 1013861 \
   --format=JobID,JobName,State,Elapsed,ExitCode,Submit,Start,End
