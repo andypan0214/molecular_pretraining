@@ -1,0 +1,50 @@
+#### check everything is save on scratch 
+
+rsync -a -n -c --itemize-changes \
+  /home/ypan/heart_liver/model_train/ \
+  /scratch/ypan/heart_liver/model_train/
+
+#### expect no output 
+
+### check every necessary file is indeed in the location 
+
+BASE=/scratch/ypan/heart_liver/model_train
+
+ls -lh "$BASE/UniMolReference/ligand_data/ligands/"
+ls -lh "$BASE/heart-molecular-pretraining/runs/h200/full/heart-h200-b448-v1/checkpoint_best.pt"
+ls -lh "$BASE/lipid_library/"
+
+### check size 
+du -sh /home/ypan/heart_liver/model_train/*
+du -sh /scratch/ypan/heart_liver/model_train/*
+
+### check LMDB is correct
+
+import lmdb
+
+path = "/scratch/ypan/heart_liver/model_train/UniMolReference/ligand_data/ligands/train.lmdb"
+
+env = lmdb.open(
+    path,
+    readonly=True,
+    lock=False,
+    readahead=False,
+    subdir=False
+)
+
+with env.begin() as txn:
+    print("Number of records:", txn.stat()["entries"])
+    print("First record accessible:", next(iter(txn.cursor()), None) is not None)
+
+env.close()
+
+### check all the orignla path 
+
+cd /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+
+grep -RnI \
+  --exclude-dir=.git \
+  --exclude-dir=runs \
+  '/home/ypan/heart_liver' \
+  config/ bin/ model/ tools/
+
