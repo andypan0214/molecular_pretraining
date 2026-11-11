@@ -1,3 +1,12 @@
+#### check cp status
+
+ps -u "$USER" -o pid,etime,stat,cmd | grep -E '[r]sync|[c]p '
+
+du -sh /home/ypan/heart_liver/model_train/
+du -sh /scratch/ypan/heart_liver/model_train/
+
+watch -n 30 'du -sh /scratch/ypan/heart_liver/model_train/'
+
 #### check everything is save on scratch 
 
 rsync -a -n -c --itemize-changes \
