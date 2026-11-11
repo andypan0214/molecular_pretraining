@@ -57,6 +57,21 @@ sacct -j 1013861 \
 
 python -c "import json; p='/scratch/ypan/heart_liver/model_train/lipid_library/lmdb/lmdb_writer_config.json'; d=json.load(open(p)); print('Fingerprint:',d['fingerprint']); print('Drop list:',d['config'].get('drop_list')); print('Scientific options:',{k:d['config'].get(k) for k in ['n_3d','store_2d','max_try','records_per_shard']})"
 
+###
+
+python - <<'PY'
+import json
+
+p = "/scratch/ypan/heart_liver/model_train/lipid_library/lmdb/lmdb_writer_config.json"
+
+with open(p) as f:
+    d = json.load(f)["config"]
+
+for key, value in sorted(d.items()):
+    print(f"{key}: {value}")
+PY
+
+
 
 
 
