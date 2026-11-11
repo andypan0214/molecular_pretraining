@@ -76,6 +76,12 @@ for name in ["train.lmdb", "valid.lmdb"]:
     env.close()
 PY
 
+##
+
+du -sh /scratch/ypan/heart_liver/model_train/lipid_library/*
+find /scratch/ypan/heart_liver/model_train/lipid_library/lmdb \
+  -maxdepth 1 -type d -name 'shard-*' | wc -l
+
 ### check all the orignla path 
 
 cd /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
