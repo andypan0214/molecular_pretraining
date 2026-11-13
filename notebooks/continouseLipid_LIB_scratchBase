@@ -206,17 +206,20 @@ bin/heart library --status
 
 #### dry run check what is left: 
 
-bin/heart library --resume --dry-run
+bin/heart \
+  --config /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/config/heart_v2_scratch.yaml \
+  library --resume --dry-run
 
 #### resume 
 
-bin/heart library --resume --submit
-
+bin/heart \
+  --config /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/config/heart_v2_scratch.yaml \
+  library --resume --submit
 #### check status
 
-squeue -u $USER
-
-bin/heart library --status
-
+squeue -u "$USER"
+bin/heart \
+  --config /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/config/heart_v2_scratch.yaml \
+  library --status
 
 
