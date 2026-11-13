@@ -196,5 +196,27 @@ bin/heart \
   --config /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/config/heart_v2_scratch.yaml \
   library --status
 
+#### check previous status
+
+cd /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+
+squeue -j 1013864,1013865
+
+bin/heart library --status
+
+#### dry run check what is left: 
+
+bin/heart library --resume --dry-run
+
+#### resume 
+
+bin/heart library --resume --submit
+
+#### check status
+
+squeue -u $USER
+
+bin/heart library --status
+
 
 
