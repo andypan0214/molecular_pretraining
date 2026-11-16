@@ -1,0 +1,30 @@
+====== HOME VS SCRATCH AUDIT ======
+
+====== /home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2 ======
+v2/lipid-continual
+a3abf5ff3351ae7ecd4d7700b2ab4e6b36f7ceae
+?? home_scratch_code_audit.txt
+
+====== /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2 ======
+v2/lipid-continual
+a3abf5ff3351ae7ecd4d7700b2ab4e6b36f7ceae
+ M model/pretrain/lipid_library/lmdb_writer.py
+?? config/heart_v2_scratch.yaml
+?? heart_scratch_relocation.py
+?? model/HEART_v2_General_Ligand_Dedup_and_H200_10K.ipynb
+?? model/pretrain/lipid_library/_scratch_relocation_identity.py
+?? model/pretrain/lipid_library/lmdb_writer.py.before_scratch_relocation.bak
+model/pretrain/lipid_library/lmdb_writer.py
+
+====== FILE DIFFERENCES ======
+
+---- config ----
+Only in /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/config: heart_v2_scratch.yaml
+
+---- bin ----
+
+---- model/pretrain ----
+Files /home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/model/pretrain/lipid_library/lmdb_writer.py and /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/model/pretrain/lipid_library/lmdb_writer.py differ
+Only in /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/model/pretrain/lipid_library: _scratch_relocation_identity.py
+
+---- model/unimol ----
