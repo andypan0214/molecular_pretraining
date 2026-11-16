@@ -39,5 +39,69 @@ echo "Audit saved to: $REPORT"
 cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
 
 python tools/check_project_data_integrity.py \
+
+
+#### check lipid library (scratch & porject)
+
+SRC=/scratch/ypan/heart_liver/model_train/lipid_library
+DST=/project/yli4/ypan/lipid_library
+
+if [ -d "$SRC" ] && [ -d "$DST" ]; then
+    RESULT=$(rsync -rni --size-only --delete "$SRC/" "$DST/")
+    if [ -z "$RESULT" ]; then
+        echo "PASS: All file paths and sizes match."
+    else
+        echo "DIFFERENCES FOUND:"
+        echo "$RESULT"
+    fi
+else
+    echo "ERROR: Source or destination directory missing."
+fi
+
+
   --report /home/ypan/project_data_integrity_report.json
+
+
+#### 
+
+# ===== 1. Model Runs =====
+RUNS_SRC=/home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/runs
+RUNS_DST=/project/yli4/ypan/runs
+
+# ===== 2. UniMolReference =====
+REF_SRC=/scratch/ypan/heart_liver/model_train/UniMolReference
+REF_DST=/project/yli4/ypan/UniMolReference
+
+# ===== Comparison function =====
+compare_dirs() {
+    NAME="$1"
+    SRC="$2"
+    DST="$3"
+
+    echo "========== $NAME =========="
+
+    if [ ! -d "$SRC" ] || [ ! -d "$DST" ]; then
+        echo "ERROR: Source or destination does not exist."
+        return
+    fi
+
+    RESULT=$(rsync -rni --size-only --delete "$SRC/" "$DST/" 2>&1)
+    STATUS=$?
+
+    if [ "$STATUS" -ne 0 ]; then
+        echo "ERROR: rsync failed."
+        echo "$RESULT"
+    elif [ -z "$RESULT" ]; then
+        echo "PASS: All file paths and sizes match."
+    else
+        echo "DIFFERENCES FOUND:"
+        echo "$RESULT" | head -30
+        echo "(Showing first 30 differences)"
+    fi
+}
+
+compare_dirs "MODEL RUNS" "$RUNS_SRC" "$RUNS_DST"
+compare_dirs "UNIMOL REFERENCE" "$REF_SRC" "$REF_DST"
+
+
 
