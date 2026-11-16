@@ -177,4 +177,14 @@ python -m py_compile model/pretrain/lipid_library/prepare_3d_view.py
 sbatch model/pretrain/scripts/lipid_library/05_prepare_3d_view.sbatch
 
 
+#### 
+squeue -j 1013916
+
+sacct -j 1013916 \
+  --format=JobID,JobName,State,ExitCode,Elapsed
+
+####
+
+scontrol show job 1013916 | grep -E 'StdOut=|StdErr='
+
 
