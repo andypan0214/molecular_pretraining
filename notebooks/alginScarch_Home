@@ -1,0 +1,35 @@
+#### check what have to be change from home directory 
+
+HOME_REPO=/home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+SCRATCH_REPO=/scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+REPORT="$HOME_REPO/home_scratch_code_audit.txt"
+
+{
+    echo "====== HOME VS SCRATCH AUDIT ======"
+
+    for REPO in "$HOME_REPO" "$SCRATCH_REPO"; do
+        echo
+        echo "====== $REPO ======"
+        git -C "$REPO" branch --show-current
+        git -C "$REPO" rev-parse HEAD
+        git -C "$REPO" status --short
+        git -C "$REPO" diff --name-only
+    done
+
+    echo
+    echo "====== FILE DIFFERENCES ======"
+
+    for SUB in config bin model/pretrain model/unimol; do
+        echo
+        echo "---- $SUB ----"
+        diff -qr \
+            --exclude=__pycache__ \
+            --exclude='*.pyc' \
+            --exclude='*.bak' \
+            "$HOME_REPO/$SUB" \
+            "$SCRATCH_REPO/$SUB" || true
+    done
+
+} > "$REPORT" 2>&1
+
+echo "Audit saved to: $REPORT"
