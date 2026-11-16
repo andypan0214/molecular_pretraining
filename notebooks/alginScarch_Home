@@ -168,5 +168,13 @@ bash model/pretrain/scripts/lipid_library/05_finalize.sh
 
 ls -lh /project/yli4/ypan/audits/ugi_3d_readiness/
 
+####
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+python -m py_compile model/pretrain/lipid_library/prepare_3d_view.py
+
+sbatch model/pretrain/scripts/lipid_library/05_prepare_3d_view.sbatch
+
 
 
