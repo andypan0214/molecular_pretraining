@@ -104,4 +104,24 @@ compare_dirs "MODEL RUNS" "$RUNS_SRC" "$RUNS_DST"
 compare_dirs "UNIMOL REFERENCE" "$REF_SRC" "$REF_DST"
 
 
+####
+
+cd /home/ypan/heart_liver/model_train
+
+# 不覆寫已存在的新版目錄
+test ! -e heart-molecular-pretraining || {
+    echo "Destination exists — stop"
+    exit 1
+}
+
+unzip ~/heart-molecular-pretraining_ProjectReady.zip
+
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+bin/heart baseline
+bin/heart check
+python scripts/verify_project_layout.py
+
+
 
