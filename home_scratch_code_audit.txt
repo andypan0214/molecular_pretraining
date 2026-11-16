@@ -28,3 +28,36 @@ Files /home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/model/pr
 Only in /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/model/pretrain/lipid_library: _scratch_relocation_identity.py
 
 ---- model/unimol ----
+
+
+### check require reference 
+
+HOME_DATA=/home/ypan/heart_liver/model_train
+PROJECT_DATA=/project/yli4/ypan
+
+echo "===== UniMolReference ====="
+ls -ld "$PROJECT_DATA/UniMolReference"
+ls -lh "$PROJECT_DATA/UniMolReference/ligand_data/ligands/"{train.lmdb,valid.lmdb,dict.txt}
+
+echo "===== RUNS ====="
+ls -ld "$HOME_DATA/runs" "$PROJECT_DATA/runs" 2>&1
+
+echo "===== HOME RUNS NOT IN PROJECT ====="
+if [ -d "$HOME_DATA/runs" ]; then
+    rsync -rni --checksum \
+      --out-format='%i %n' \
+      "$HOME_DATA/runs/" "$PROJECT_DATA/runs/"
+fi
+
+echo "===== LIPID LIBRARY ====="
+ls -ld "$PROJECT_DATA/lipid_library"
+
+echo "===== LMDB SHARDS ====="
+find "$PROJECT_DATA/lipid_library/lmdb" \
+    -name shard.json -type f | wc -l
+
+echo "===== STAGE 05 REPORTS ====="
+ls -lh \
+    "$PROJECT_DATA/lipid_library/lmdb/manifest.json" \
+    "$PROJECT_DATA/lipid_library/lmdb/splits.json" \
+    "$PROJECT_DATA/lipid_library/lmdb/quality_report.json"
