@@ -187,4 +187,10 @@ sacct -j 1013916 \
 
 scontrol show job 1013916 | grep -E 'StdOut=|StdErr='
 
+####
+
+cat /project/yli4/ypan/audits/ugi_3d_final_view/final_dataset_view.md
+
+
+
 
