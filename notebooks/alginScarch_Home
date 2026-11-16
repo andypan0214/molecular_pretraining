@@ -136,5 +136,37 @@ cp -p "$DIR/06_verify_library.sh" "$DIR/06_verify_library.sh.bak"
 # Verify backups
 ls -lh "$DIR"/{05_finalize.sh,06_verify_library.sh}*
 
+#### 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+ls -lh \
+  model/pretrain/scripts/lipid_library/05_finalize.sh \
+  model/pretrain/scripts/lipid_library/06_verify_library.sh \
+  model/pretrain/lipid_library/audit_existing_3d.py
+
+####
+
+bash -n model/pretrain/scripts/lipid_library/05_finalize.sh
+bash -n model/pretrain/scripts/lipid_library/06_verify_library.sh
+
+python -m py_compile model/pretrain/lipid_library/audit_existing_3d.py
+
+bin/heart check
+
+#####
+
+grep -n 'HEART_STAGE05_AUDIT_ONLY' \
+  model/pretrain/scripts/lipid_library/05_finalize.sh
+
+####
+
+HEART_STAGE05_AUDIT_ONLY=1 \
+bash model/pretrain/scripts/lipid_library/05_finalize.sh
+
+####
+
+ls -lh /project/yli4/ypan/audits/ugi_3d_readiness/
+
 
 
