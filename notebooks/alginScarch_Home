@@ -123,5 +123,18 @@ bin/heart baseline
 bin/heart check
 python scripts/verify_project_layout.py
 
+### update stage 5 and 6 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+DIR=model/pretrain/scripts/lipid_library
+
+# Backup original scripts
+cp -p "$DIR/05_finalize.sh" "$DIR/05_finalize.sh.bak"
+cp -p "$DIR/06_verify_library.sh" "$DIR/06_verify_library.sh.bak"
+
+# Verify backups
+ls -lh "$DIR"/{05_finalize.sh,06_verify_library.sh}*
+
 
 
