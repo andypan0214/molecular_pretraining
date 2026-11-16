@@ -33,3 +33,11 @@ REPORT="$HOME_REPO/home_scratch_code_audit.txt"
 } > "$REPORT" 2>&1
 
 echo "Audit saved to: $REPORT"
+
+####
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining-v2
+
+python tools/check_project_data_integrity.py \
+  --report /home/ypan/project_data_integrity_report.json
+
