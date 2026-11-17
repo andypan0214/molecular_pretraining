@@ -228,9 +228,16 @@ model/pretrain/scripts/lipid_library/06_verify_library.sh
 
 ### step6  fail 
 
-tail -n 80 /project/yli4/ypan/lipid_library/logs/lipid-06-1013924.err
+find /project/yli4/ypan/lipid_library/logs \
+  -maxdepth 1 -type f -name '*1013924*' -print
 
-tail -n 60 /project/yli4/ypan/lipid_library/logs/lipid-06-1013924.out
+for f in /project/yli4/ypan/lipid_library/logs/*1013924*; do
+    echo "===== $f ====="
+    tail -n 80 "$f"
+done
+
+sacct -j 1013924 \
+  --format=JobID,State,ExitCode,StdOut,StdErr -P
 
 
 ### if step6 complete
