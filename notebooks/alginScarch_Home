@@ -192,5 +192,41 @@ scontrol show job 1013916 | grep -E 'StdOut=|StdErr='
 cat /project/yli4/ypan/audits/ugi_3d_final_view/final_dataset_view.md
 
 
+#### check step5 again
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+LIB=/project/yli4/ypan/lipid_library/lmdb
+
+test -f "$LIB/manifest.json" && echo "PASS: finalized manifest exists"
+
+ls -lh \
+  "$LIB/manifest.json" \
+  "$LIB/splits.json" \
+  "$LIB/quality_report.json" \
+  "$LIB/quality_report.md"
+
+#### 
+
+cd /home/ypan
+unzip -q Ugi_TrainingReady_Minimal_Patch.zip
+
+python Ugi_TrainingReady_Minimal_Patch/install.py --check
+
+
+#### if shown pass 
+
+python Ugi_TrainingReady_Minimal_Patch/install.py --apply
+
+#### execute 06 step 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+HEART_CONFIRM_LIPID=1 HEART_V2_ALLOW_DIRECT=1 \
+sbatch --export=ALL \
+model/pretrain/scripts/lipid_library/06_verify_library.sh
+
+
+
 
 
