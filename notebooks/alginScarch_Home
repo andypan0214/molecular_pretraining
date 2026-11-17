@@ -317,5 +317,15 @@ squeue -u "$USER"
 sacct -j JOBID --format=JobID,JobName,State,ExitCode,Elapsed
 
 
+#### check environment before actual continual training 
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+ls -lh /project/yli4/ypan/lipid_library/lmdb/library_3d_ready.json
+
+bin/heart continual --dry-run
+
+
+
 
 
