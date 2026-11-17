@@ -365,7 +365,22 @@ cd /home/ypan/heart_liver/model_train
 
 sbatch HEART_Ugi_Priority1_AutoFull_run.sbatch
 
+####
+
+sacct -j 1013934 --format=JobID,JobName,State,ExitCode,Elapsed,Reason
+
+scontrol show job 1013934 | grep -E "StdOut|StdErr|WorkDir"
 
 
+### error log 
+cd /home/ypan/heart_liver/model_train
+
+ls -lt *.err *.out | head -20
+
+
+####
+
+cat heart-ugi-P1-auto-1013934.err
+tail -80 heart-ugi-P1-auto-1013934.out
 
 
