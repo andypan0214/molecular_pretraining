@@ -226,7 +226,11 @@ HEART_CONFIRM_LIPID=1 HEART_V2_ALLOW_DIRECT=1 \
 sbatch --export=ALL \
 model/pretrain/scripts/lipid_library/06_verify_library.sh
 
+### if step6 complete
 
+bin/heart continual --check
+
+bin/heart continual --smoke --submit
 
 
 
