@@ -239,6 +239,11 @@ done
 sacct -j 1013924 \
   --format=JobID,State,ExitCode,StdOut,StdErr -P
 
+####
+
+readlink -f /project/yli4/ypan/lipid_library/lmdb
+readlink -f /project/yli4/ypan/audits/ugi_3d_final_view
+
 
 ### if step6 complete
 
