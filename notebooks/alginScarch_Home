@@ -359,6 +359,12 @@ grep 'train_inner' "$LOG" | head -n 12
 
 grep 'train_inner' "$LOG" | tail -n 12
 
+####
+
+cd /home/ypan/heart_liver/model_train
+
+sbatch HEART_Ugi_Priority1_AutoFull_run.sbatch
+
 
 
 
