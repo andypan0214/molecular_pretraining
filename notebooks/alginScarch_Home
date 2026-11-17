@@ -245,6 +245,39 @@ readlink -f /project/yli4/ypan/lipid_library/lmdb
 readlink -f /project/yli4/ypan/audits/ugi_3d_final_view
 
 
+####
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+####
+
+python - <<'PY'
+from pathlib import Path
+
+p = Path("model/unimol/data/merged_sampling_dataset.py")
+s = p.read_text()
+
+old = "rel = os.path.relpath(path, root)"
+new = "rel = os.path.relpath(os.path.realpath(path), root)"
+
+if s.count(old) == 1:
+    p.write_text(s.replace(old, new))
+    print("PASS: path normalization fixed")
+elif new in s:
+    print("PASS: fix already applied")
+else:
+    print("STOP: expected code not found; no changes made")
+PY
+
+####
+python -m py_compile model/unimol/data/merged_sampling_dataset.py
+
+#### if pass
+
+HEART_CONFIRM_LIPID=1 HEART_V2_ALLOW_DIRECT=1 \
+sbatch --export=ALL \
+model/pretrain/scripts/lipid_library/06_verify_library.sh
+
 ### if step6 complete
 
 bin/heart continual --check
