@@ -222,4 +222,11 @@ bin/heart \
   --config /scratch/ypan/heart_liver/model_train/heart-molecular-pretraining-v2/config/heart_v2_scratch.yaml \
   library --status
 
+####
+
+cd /home/ypan/heart_liver/model_train
+
+sbatch HEART_Ugi_Priority1_Parallel100CPU_run.sbatch
+
+squeue -u "$USER"
 
