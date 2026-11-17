@@ -349,6 +349,16 @@ find /project/yli4/ypan/runs/h200/continual \
   \( -name '*log*' -o -name '*metrics*' -o -name '*valid*' \) \
   -print
 
+####
+
+LOG=/project/yli4/ypan/runs/h200/continual/heart-lipid-continual-smoke-v1/train-1013926.log
+
+grep 'train_inner' "$LOG" | head -n 12
+
+###
+
+grep 'train_inner' "$LOG" | tail -n 12
+
 
 
 
