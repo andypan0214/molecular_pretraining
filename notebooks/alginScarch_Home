@@ -325,6 +325,14 @@ ls -lh /project/yli4/ypan/lipid_library/lmdb/library_3d_ready.json
 
 bin/heart continual --dry-run
 
+#### check smoke test result 
+
+ls -lh /project/yli4/ypan/runs/h200/slurm/*1013926*
+
+tail -n 100 /project/yli4/ypan/runs/h200/slurm/*1013926*.out
+
+tail -n 60 /project/yli4/ypan/runs/h200/slurm/*1013926*.err
+
 
 
 
