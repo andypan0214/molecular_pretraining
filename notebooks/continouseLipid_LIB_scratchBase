@@ -230,3 +230,8 @@ sbatch HEART_Ugi_Priority1_Parallel100CPU_run.sbatch
 
 squeue -u "$USER"
 
+####
+sacct -j 1013933 \
+  --format=JobID,JobName,State,Elapsed,ExitCode,MaxRSS
+
+
