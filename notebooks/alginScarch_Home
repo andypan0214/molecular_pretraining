@@ -307,6 +307,14 @@ cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
 grep '^#SBATCH' \
 model/pretrain/scripts/continual_pretrain_heart-h200.sh
 
+####
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+bin/heart continual --smoke --submit
+
+squeue -u "$USER"
+
+sacct -j JOBID --format=JobID,JobName,State,ExitCode,Elapsed
 
 
 
