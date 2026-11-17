@@ -278,6 +278,22 @@ HEART_CONFIRM_LIPID=1 HEART_V2_ALLOW_DIRECT=1 \
 sbatch --export=ALL \
 model/pretrain/scripts/lipid_library/06_verify_library.sh
 
+####
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+python - <<'PY'
+import json
+from pathlib import Path
+
+p = Path("/project/yli4/ypan/lipid_library/lmdb/library_3d_ready.json")
+assert p.is_file(), "Missing library_3d_ready.json"
+r = json.loads(p.read_text())
+print(json.dumps({k: v for k, v in r.items()
+                  if k in ("passed", "ready", "problems", "errors")},
+                 indent=2))
+PY
+
+
 ### if step6 complete
 
 bin/heart continual --check
