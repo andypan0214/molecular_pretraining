@@ -333,6 +333,22 @@ tail -n 100 /project/yli4/ypan/runs/h200/slurm/*1013926*.out
 
 tail -n 60 /project/yli4/ypan/runs/h200/slurm/*1013926*.err
 
+###
+
+cd /home/ypan/heart_liver/model_train/heart-molecular-pretraining
+
+grep -Ei \
+'loss|accuracy|acc|valid|train_inner|train_num_updates' \
+/project/yli4/ypan/runs/h200/slurm/*1013926*.out \
+| tail -n 100
+
+###
+
+find /project/yli4/ypan/runs/h200/continual \
+  -maxdepth 3 -type f \
+  \( -name '*log*' -o -name '*metrics*' -o -name '*valid*' \) \
+  -print
+
 
 
 
