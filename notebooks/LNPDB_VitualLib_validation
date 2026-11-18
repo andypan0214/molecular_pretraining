@@ -1,0 +1,149 @@
+
+# Section 9 — LNPDB vs Ugi-4CR molecular overlap
+# Read-only analysis using the completed Priority 1 identity index.
+
+from pathlib import Path
+import hashlib
+import os
+import sqlite3
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from rdkit import Chem, RDLogger
+from IPython.display import display
+
+RDLogger.DisableLog("rdApp.*")
+
+# Change only if the LNPDB CSV is stored elsewhere.
+LNPDB_CSV = Path(
+    os.getenv("HEART_LNPDB_CSV", str(Path.cwd() / "LNPDB.csv"))
+)
+
+# Reuse the existing full-library identity index.
+candidate_dbs = [
+    globals().get("DB_PATH"),
+    Path("/project/yli4/ypan/audits/ugi_priority1_evidence/cache/"
+         "ugi_priority1_identity.sqlite3"),
+    Path("/project/yli4/ypan/audits/ugi_priority1_interactive_evidence/cache/"
+         "ugi_priority1_identity.sqlite3"),
+]
+
+identity_db = next(
+    (Path(p) for p in candidate_dbs if p and Path(p).is_file()),
+    None
+)
+
+if not LNPDB_CSV.is_file():
+    raise FileNotFoundError(
+        f"LNPDB CSV not found: {LNPDB_CSV}. Update LNPDB_CSV."
+    )
+
+if identity_db is None:
+    raise FileNotFoundError(
+        "Ugi identity SQLite not found. Set identity_db to the "
+        "existing ugi_priority1_identity.sqlite3 path."
+    )
+
+lnpdb = pd.read_csv(LNPDB_CSV, usecols=["IL_SMILES"])
+ugi_core = Chem.MolFromSmiles("C(=O)NCC(=O)N")
+
+unique_molecules = {}
+invalid_rows = 0
+
+for smi in lnpdb["IL_SMILES"].dropna().astype(str):
+    mol = Chem.MolFromSmiles(smi.strip())
+    if mol is None:
+        invalid_rows += 1
+        continue
+
+    canonical = Chem.MolToSmiles(
+        mol, canonical=True, isomericSmiles=True
+    )
+    unique_molecules.setdefault(
+        canonical, mol.HasSubstructMatch(ugi_core)
+    )
+
+conn = sqlite3.connect(
+    f"file:{identity_db.as_posix()}?mode=ro", uri=True
+)
+
+try:
+    completed_shards = conn.execute(
+        "SELECT COUNT(*) FROM done"
+    ).fetchone()[0]
+
+    if completed_shards != 3049:
+        raise RuntimeError(
+            f"Incomplete Ugi index: {completed_shards}/3049 shards"
+        )
+
+    records = []
+
+    for canonical, ugi_like in unique_molecules.items():
+        digest = hashlib.blake2b(
+            canonical.encode("utf-8"), digest_size=16
+        ).digest()
+
+        hit = conn.execute(
+            "SELECT n_train, n_valid, n_total "
+            "FROM molecules WHERE hash=?",
+            (digest,)
+        ).fetchone()
+
+        records.append({
+            "canonical_smiles": canonical,
+            "ugi_like": bool(ugi_like),
+            "matched": hit is not None,
+            "ugi_train": bool(hit and hit[0] > 0),
+            "ugi_valid": bool(hit and hit[1] > 0),
+        })
+finally:
+    conn.close()
+
+results = pd.DataFrame(records)
+
+results["group"] = results["ugi_like"].map({
+    True: "Ugi-like motif",
+    False: "Other structures"
+})
+
+summary = pd.crosstab(
+    results["group"], results["matched"]
+).reindex(
+    index=["Ugi-like motif", "Other structures"],
+    columns=[False, True],
+    fill_value=0
+)
+
+summary.columns = ["Unmatched", "Matched"]
+
+print("LNPDB unique molecules:", len(results))
+print("Invalid LNPDB rows:", invalid_rows)
+print("Ugi shards indexed:", completed_shards)
+
+display(summary)
+
+print("Matched in Ugi train:", int(results["ugi_train"].sum()))
+print("Matched in Ugi validation:", int(results["ugi_valid"].sum()))
+print(
+    "Matched in both:",
+    int((results["ugi_train"] & results["ugi_valid"]).sum())
+)
+
+ax = summary.plot(
+    kind="bar", stacked=True, figsize=(8, 4), rot=0
+)
+
+ax.set_title("LNPDB vs Ugi-4CR: Exact Canonical Overlap")
+ax.set_xlabel("LNPDB structural class")
+ax.set_ylabel("Unique LNPDB molecules")
+
+plt.tight_layout()
+plt.show()
+
+print("Unmatched Ugi-like LNPDB examples:")
+display(
+    results[
+        results["ugi_like"] & ~results["matched"]
+    ].head(10)
+)
