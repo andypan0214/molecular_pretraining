@@ -384,3 +384,23 @@ cat heart-ugi-P1-auto-1013934.err
 tail -80 heart-ugi-P1-auto-1013934.out
 
 
+####
+
+cd ~/heart_liver/model_train
+
+sacct -j 1013935 --format=JobID,State,ExitCode,Elapsed
+
+tail -n 30 heart-ugi-P1-auto-1013935.out
+
+tail -n 30 heart-ugi-P1-auto-1013935.err
+
+####
+
+find ugi_priority1_interactive_evidence/ \
+  -maxdepth 3 -type f \
+  -printf '%TY-%Tm-%Td %TH:%TM %p\n' \
+  | sort | tail -40
+
+
+
+
